@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: products-depl
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: products
+    template:
+        metadata:
+            labels:
+                app: products
+        spec:
+            containers:
+                - name: products
+                  image: 0866500635/shobee-products
+                  env:
+                      - name: RABBIT_URI
+                        value: 'amqp://rabbitmq-srv:5672'
+                      - name: JWT_KEY
+                        valueFrom:
+                            secretKeyRef:
+                                name: jwt-secret
+                                key: JWT_KEY
+                      - name: JWT_AT_EX
+                        value: 5h
+                      - name: JWT_RT_EX
+                        value: 7d
+                      - name: MONGO_URI
+                        valueFrom:
+                            secretKeyRef:
+                                name: mongo-uri-secret
+                                key: MONGO_URI
+                      #   - name: MONGO_URI
+                      #     value: 'mongodb://products-mongo-srv:27017/products-service'
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: products-srv
+spec:
+    selector:
+        app: products
+    type: ClusterIP
+    ports:
+        - name: products
+          protocol: TCP
+          port: 3000
+          targetPort: 3000

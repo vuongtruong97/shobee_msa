@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: catalogs-depl
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: catalogs
+    template:
+        metadata:
+            labels:
+                app: catalogs
+        spec:
+            containers:
+                - name: catalogs
+                  image: 0866500635/shobee-catalogs
+                  env:
+                      - name: RABBIT_URI
+                        value: 'amqp://rabbitmq-srv:5672'
+                      - name: JWT_KEY
+                        valueFrom:
+                            secretKeyRef:
+                                name: jwt-secret
+                                key: JWT_KEY
+                      - name: JWT_AT_EX
+                        value: 5h
+                      - name: JWT_RT_EX
+                        value: 7d
+                      - name: MONGO_URI
+                        valueFrom:
+                            secretKeyRef:
+                                name: mongo-uri-secret
+                                key: MONGO_URI
+                      #   - name: MONGO_URI
+                      #     value: 'mongodb://catalogs-mongo-srv:27017/catalogs-service'
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: catalogs-srv
+spec:
+    selector:
+        app: catalogs
+    type: ClusterIP
+    ports:
+        - name: catalogs
+          protocol: TCP
+          port: 3000
+          targetPort: 3000

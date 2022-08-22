@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: orders-depl
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: orders
+    template:
+        metadata:
+            labels:
+                app: orders
+        spec:
+            containers:
+                - name: orders
+                  image: 0866500635/ticket-orders
+                  env:
+                      - name: MONGO_URI
+                        value: 'mongodb://auth-mongo-srv:27017/orders-service'
+                      - name: RABBIT_URI
+                        value: 'amqp://rabbitmq-srv:5672'
+                      - name: JWT_KEY
+                        valueFrom:
+                            secretKeyRef:
+                                name: jwt-secret
+                                key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: orders-srv
+spec:
+    selector:
+        app: orders
+    type: ClusterIP
+    ports:
+        - name: orders
+          protocol: TCP
+          port: 3000
+          targetPort: 3000

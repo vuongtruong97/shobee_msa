@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: auth-depl
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: auth
+    template:
+        metadata:
+            labels:
+                app: auth
+        spec:
+            containers:
+                - name: auth
+                  image: 0866500635/shobee-auth
+                  env:
+                      - name: RABBIT_URI
+                        value: 'amqp://rabbitmq-srv:5672'
+                      - name: JWT_KEY
+                        valueFrom:
+                            secretKeyRef:
+                                name: jwt-secret
+                                key: JWT_KEY
+                      - name: JWT_AT_EX
+                        value: 5h
+                      - name: JWT_RT_EX
+                        value: 7d
+                      - name: MONGO_URI
+                        valueFrom:
+                            secretKeyRef:
+                                name: mongo-uri-secret
+                                key: MONGO_URI
+                      #   - name: MONGO_URI
+                      #     value: 'mongodb://auth-mongo-srv:27017/auth-service'
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: auth-srv
+spec:
+    selector:
+        app: auth
+    type: ClusterIP
+    ports:
+        - name: auth
+          protocol: TCP
+          port: 3000
+          targetPort: 3000
