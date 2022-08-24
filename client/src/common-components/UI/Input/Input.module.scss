@@ -1,0 +1,47 @@
+.input {
+    width: 100%;
+    label {
+        font-size: 1.8rem;
+    }
+    .input-wrap {
+        border: 1px solid #ccc;
+        input,
+        textarea {
+            height: 3.5rem;
+            line-height: 4rem;
+            font-size: 1.6rem;
+            width: 100%;
+            padding: 0 10px;
+            font-family: inherit;
+            border: none;
+            &:focus {
+                outline: 1px solid #6c6c6c;
+            }
+            &.rounded {
+                border-radius: 999px;
+            }
+        }
+        textarea {
+            resize: none;
+            height: 40rem;
+            &:focus {
+                outline: none;
+            }
+        }
+
+        &.error {
+            border: 1px solid var(--error);
+            input,
+            textarea {
+                background-color: var(--error-bg);
+            }
+        }
+    }
+    .error_message {
+        display: block;
+        margin-top: 0.5rem;
+        margin-left: 0.5rem;
+        font-size: 1.3rem;
+        color: var(--error);
+    }
+}

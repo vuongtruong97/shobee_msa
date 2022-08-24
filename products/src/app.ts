@@ -11,7 +11,10 @@ import { ProductGetListRouter } from './routes/product-get-list'
 
 import { shopCreateRouter } from './routes/shop-create'
 
-import { CartGetListRouter } from './routes/cart-get-list'
+import { CartGetMiniRouter } from './routes/cart-mini'
+import { CartGetDetailRouter } from './routes/cart-detail'
+import { CartModifyRouter } from './routes/cart-modify'
+import { CartDeleteRouter } from './routes/cart-delete'
 
 const app = express()
 
@@ -26,7 +29,6 @@ app.use(
         origin: [
             'http://localhost:3000',
             'https://snobdev.online',
-            'http://192.168.1.29',
             'https://shobee.snobdev.online',
         ],
         credentials: true,
@@ -39,7 +41,10 @@ app.use(ProductGetListRouter)
 
 app.use(shopCreateRouter)
 
-app.use(CartGetListRouter)
+app.use(CartModifyRouter)
+app.use(CartGetMiniRouter)
+app.use(CartGetDetailRouter)
+app.use(CartDeleteRouter)
 
 app.use('*', async (req: Request, res: Response, next: NextFunction) => {
     try {

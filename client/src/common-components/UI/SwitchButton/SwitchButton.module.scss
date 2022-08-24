@@ -1,0 +1,64 @@
+.switch__container {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    opacity: 0.5;
+    transition: linear 0.2s;
+    &:hover {
+        opacity: 1;
+    }
+}
+
+.switch {
+    visibility: hidden;
+    position: absolute;
+    margin-left: -9999px;
+}
+
+.switch + label {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    user-select: none;
+}
+
+.switch--flat + label {
+    padding: 2px;
+    width: 46px;
+    height: 25px;
+    background-color: #dddddd;
+    border-radius: 60px;
+    transition: background 0.4s;
+}
+.switch--flat + label:before,
+.switch--flat + label:after {
+    display: block;
+    position: absolute;
+    content: '';
+}
+.switch--flat + label:before {
+    top: 2px;
+    left: 2px;
+    bottom: 2px;
+    right: 2px;
+    background-color: #fff;
+    border-radius: 60px;
+    transition: background 0.4s;
+}
+.switch--flat + label:after {
+    top: 3px;
+    left: 3px;
+    bottom: 3px;
+    width: 19px;
+    background-color: var(--primary);
+    border-radius: 999px;
+    transition: margin 0.4s, background 0.4s;
+}
+.switch--flat:checked + label {
+    background-color: #c3c3c3;
+}
+.switch--flat:checked + label:after {
+    margin-left: 21px;
+    background-color: var(--primary);
+}

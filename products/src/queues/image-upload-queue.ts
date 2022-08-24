@@ -1,6 +1,8 @@
 import Queue from 'bull'
 import { uploadToCloudinary } from '../utils/uploadImage'
 import { Product } from '../models/Product'
+import { ProductCreatedPublisher } from '../events/publishers/product-created-publisher'
+import { rabbitWrapper } from '../rabbitmq-wrapper'
 
 enum QueueModel {
     Product = 'Product',
@@ -44,7 +46,29 @@ imageUploadQueue.process(async (job) => {
                 }, [])
 
                 if (list_url.length > 0) {
-                    await Product.findByIdAndUpdate(job.data.id, { image_urls: list_url })
+                    const product = await Product.findByIdAndUpdate(
+                        job.data.id,
+                        { image_urls: list_url },
+                        { new: true }
+                    )
+
+                    if (!product) {
+                        throw new Error('Cập nhật sản phẩm thất bại')
+                    }
+
+                    await new ProductCreatedPublisher(
+                        rabbitWrapper.channels.productCreatedChannel
+                    ).publish({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        quantity: product.quantity,
+                        discount: product.discount,
+                        shop: product.shop,
+                        image_url: product.image_urls[0] || '',
+                        version: product.version,
+                        status: 'active',
+                    })
 
                     console.log('Update product images success', list_url)
                 }

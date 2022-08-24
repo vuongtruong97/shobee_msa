@@ -1,0 +1,95 @@
+.sortBar {
+    font-weight: 400;
+    background: rgba(0, 0, 0, 0.03);
+    padding: 1.3rem 2rem;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.4rem;
+    .label {
+        color: #555;
+        margin: 0 0.5rem 0 0;
+    }
+    .sortOptions {
+        display: flex;
+        align-items: stretch;
+        flex: 1;
+        justify-content: flex-start;
+        .option {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 1px 0 rgb(0 0 0 / 2%);
+            height: 3.4rem;
+            border-radius: 2px;
+            border: 0;
+            cursor: pointer;
+            text-transform: capitalize;
+            padding: 0 1.5rem;
+            background: #fff;
+            white-space: nowrap;
+            margin-left: 1rem;
+        }
+        .priceOptions {
+            justify-content: space-between;
+            width: 17rem;
+            position: relative;
+            & > span > svg {
+                margin-top: 2px;
+                font-size: 1.8rem;
+            }
+            .list {
+                position: absolute;
+                width: 100%;
+                right: 0;
+                top: calc(100% + 2px);
+                border-radius: 2px;
+                overflow: hidden;
+                z-index: 999;
+                &::before {
+                    content: '';
+                    position: absolute;
+                    display: block;
+                    width: 100%;
+                    height: 2rem;
+                    top: -1.5rem;
+                }
+                .priceOption {
+                    display: flex;
+                    align-items: center;
+                    height: 3.4rem;
+                    padding: 0 1.5rem;
+                    background-color: #fff;
+                    &:hover {
+                        color: var(--primary);
+                    }
+                }
+            }
+        }
+    }
+    .miniPaging {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .pageControl {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 1px 0 rgb(0 0 0 / 2%);
+            height: 3.4rem;
+            border-radius: 2px;
+            border: 0;
+            cursor: pointer;
+            text-transform: capitalize;
+            padding: 0 1rem;
+            background: #fff;
+            white-space: nowrap;
+            &.prev {
+                margin-left: 1rem;
+                border-right: 1px solid #ccc;
+            }
+        }
+    }
+}

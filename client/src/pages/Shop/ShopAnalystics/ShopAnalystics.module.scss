@@ -1,0 +1,47 @@
+.todo {
+    padding: 2rem;
+    color: var(--text-primary-o);
+    & > * {
+        margin-bottom: 1.5rem;
+    }
+    .todoInfo,
+    .todoName {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.6rem;
+        text-align: center;
+    }
+    .todoInfo {
+        font-size: 1.8rem;
+        margin-bottom: 0.5em;
+        color: var(--primary);
+    }
+}
+
+.analystics {
+    padding: 2rem;
+    display: flex;
+    height: 100%;
+    font-size: 1.5rem;
+}
+.title {
+    font-size: 2.2rem;
+}
+.dataInfo {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    .inforItem {
+        flex: 1;
+        font-size: 1.8rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        border-bottom: 1px solid rgb(124, 124, 124);
+        & > * {
+            margin-bottom: 1rem;
+        }
+    }
+}

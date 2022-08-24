@@ -1,0 +1,133 @@
+.show {
+    flex: 4;
+    .share {
+        padding: 1rem;
+        & > * {
+            margin-left: 0.5rem;
+        }
+    }
+}
+
+.prop {
+    flex: 8;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    & > * {
+        margin-bottom: 1rem;
+    }
+    .title {
+        font-size: 2.3rem;
+        line-height: 3rem;
+        min-height: 6rem;
+        word-wrap: break-word;
+        white-space: normal;
+        overflow: hidden;
+        display: -webkit-box;
+        text-overflow: ellipsis;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+    .reputation {
+        display: flex;
+        font-size: 1.6rem;
+        padding: 1rem;
+
+        & > *:not(:first-child) {
+            border-left: 1px solid #ccc;
+            padding: 0 1rem;
+        }
+    }
+    .price {
+        display: flex;
+        align-items: center;
+        font-size: 3rem;
+        background-color: #f4f4f4;
+        padding: 1rem;
+        & > *:not(:first-child) {
+            margin-left: 1rem;
+        }
+    }
+
+    .options {
+        flex: 1;
+        & > * {
+            margin-bottom: 1rem;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            .optionTitle {
+                font-size: 1.6rem;
+                color: var(--text-secondary-o);
+                display: flex;
+                width: 100%;
+                .title_name {
+                    padding: 1rem;
+                    flex: 20%;
+                }
+                .title_detail {
+                    padding: 1rem;
+                    flex: 80%;
+                }
+            }
+            .quantityCrtl {
+                border: 1px solid #ccc;
+                width: fit-content;
+                .quantityCtrlBtn {
+                    width: 3rem;
+                    height: 3rem;
+                    border: none;
+                    cursor: pointer;
+                    background-color: #c2c2c2;
+                    &:hover {
+                        opacity: 0.8;
+                    }
+                }
+                .quantityInput {
+                    height: 3rem;
+                    border: none;
+                    margin: 0 0.3rem;
+                    width: 6rem;
+                    text-align: center;
+
+                    &::-webkit-outer-spin-button,
+                    &::-webkit-inner-spin-button {
+                        -webkit-appearance: none;
+                        margin: 0;
+                    }
+                }
+                .quantityCtrlBtn {
+                }
+            }
+        }
+    }
+    .actions {
+        display: flex;
+    }
+    .policy {
+    }
+}
+
+@media (min-width: 1200px) {
+    // .title_name {
+    //     padding: 1rem;
+    //     flex: 50% !important;
+    // }
+    // .title_detail {
+    //     padding: 1rem;
+    //     flex: 50% !important;
+    // }
+}
+
+@media (min-width: 768px) {
+    // .title_name {
+    //     padding: 1rem;
+    //     flex: 50% !important;
+    // }
+    // .title_detail {
+    //     padding: 1rem;
+    //     flex: 50% !important;
+    // }
+}

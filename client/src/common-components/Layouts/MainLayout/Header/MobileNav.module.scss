@@ -1,0 +1,51 @@
+@import 'assets/scss/responsive.scss';
+
+.mobile-nav-button {
+    font-size: 3rem;
+    padding: 0 2rem;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    :hover {
+        opacity: 0.8;
+    }
+}
+.nav-list {
+    position: absolute;
+    inset: 100% 0 auto 0;
+    box-shadow: 3px 4px 12px -4px rgb(0 0 0 / 63%);
+    animation: fadeIn 0.3s linear;
+    .nav-item {
+        height: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+        font-size: 2rem;
+        border-bottom: 1px solid #fff;
+        color: var(--primary);
+        cursor: pointer;
+        &:hover {
+            opacity: 0.8;
+            color: var(--secondary-green);
+        }
+    }
+}
+
+@media (max-width: $lg) {
+    .mobile-nav-button {
+        display: flex;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        transform: translateX(-40%);
+        opacity: 0.5;
+    }
+    100% {
+        transform: translateX(0%);
+        opacity: 1;
+    }
+}

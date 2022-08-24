@@ -1,4 +1,5 @@
 import { Schema, Document, Model, model } from 'mongoose'
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
 
 interface ProductAttrs {
     name: string
@@ -50,6 +51,7 @@ interface ProductDoc extends Document {
         rating_count: number[]
         rating_star: number
     }
+    version: number
 }
 
 interface ProductModel extends Model<ProductDoc> {
@@ -84,6 +86,20 @@ const productSchema = new Schema(
     },
     { timestamps: true }
 )
+
+productSchema.set('versionKey', 'version')
+productSchema.plugin(updateIfCurrentPlugin)
+
+productSchema.methods.toJSON = function () {
+    const self = this
+    const newSelf = self.toObject()
+
+    newSelf.id = newSelf._id
+
+    delete newSelf._id
+
+    return newSelf
+}
 
 productSchema.statics.build = (attrs: ProductAttrs) => {
     return new Product(attrs)

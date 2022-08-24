@@ -1,0 +1,23 @@
+.categories {
+    margin-top: 2rem;
+    background-color: #fff;
+    .header {
+        height: 6rem;
+        line-height: 6rem;
+        font-size: 2rem;
+        text-transform: uppercase;
+        padding: 0 2rem;
+        color: var(--text-tertiary);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        border-left: 1px solid rgba(0, 0, 0, 0.05);
+        border-right: 1px solid rgba(0, 0, 0, 0.05);
+    }
+}
+
+@media (max-width: 576px) {
+    .categories {
+        .header {
+            display: none;
+        }
+    }
+}

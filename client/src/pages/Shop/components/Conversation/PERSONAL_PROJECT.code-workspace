@@ -1,0 +1,39 @@
+{
+    "folders": [
+		{
+			"name": "PERSONAL_PROJECT",
+			"path": "..\\..\\..\\..\\..\\.."
+		},
+		{
+			"name": "laru",
+			"path": "..\\..\\..\\..\\..\\..\\..\\nodejs\\laru"
+		},
+		{
+			"name": "car-sell",
+			"path": "..\\..\\..\\..\\..\\..\\..\\nodejs\\nestjs\\car-sell"
+		},
+		{
+			"name": "task-manager",
+			"path": "..\\..\\..\\..\\..\\..\\..\\nodejs\\udemy_node\\node-course\\task-manager"
+		},
+		{
+			"name": "freelancer",
+			"path": "..\\..\\..\\..\\..\\..\\..\\nodejs\\freelancer"
+		},
+		{
+			"name": "test",
+			"path": "..\\..\\..\\..\\..\\..\\..\\nodejs\\test"
+		},
+		{
+			"name": "sales",
+			"path": "..\\..\\..\\..\\..\\..\\..\\nodejs\\sales"
+		},
+		{
+			"path": "..\\..\\..\\..\\..\\..\\..\\nodejs\\udemy_node\\node-course\\chat-app"
+		}
+	],
+    "settings": {
+        "liveServer.settings.multiRootWorkspaceName": "mintechbe",
+        "git.ignoreLimitWarning": true
+    }
+}

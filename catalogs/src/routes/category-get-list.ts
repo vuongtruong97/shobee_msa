@@ -11,13 +11,16 @@ router.get(
 
             const skip = (+page - 1) * +limit
 
-            const listCate = await Category.find()
+            const listCatePromise = Category.find()
                 .skip(skip)
                 .limit(+limit)
 
-            const data = listCate.length ? listCate : []
+            const totalPromise = Category.countDocuments()
 
-            const total = (await Category.countDocuments()) / +limit
+            const listCate = await listCatePromise
+            const total = (await totalPromise) / +limit
+
+            const data = listCate.length ? listCate : []
 
             res.send({ success: true, data, total })
         } catch (error) {

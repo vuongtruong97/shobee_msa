@@ -1,0 +1,125 @@
+@import 'assets/scss/responsive.scss';
+
+.search {
+    display: flex;
+    align-items: center;
+    padding: 16px 0;
+    .logo {
+        display: flex;
+        align-items: center;
+        font-size: 5rem;
+        width: 200px;
+        padding-left: 2rem;
+        color: #fff;
+        span {
+            margin-top: 1rem;
+            font-size: 2.5rem;
+            font-weight: 500;
+            color: #fff;
+        }
+    }
+    .control {
+        display: flex;
+        flex-direction: column;
+        flex: 70%;
+        .form-search {
+            form {
+                position: relative;
+                input {
+                    width: 100%;
+                    border: none;
+                    height: 40px;
+                    border-radius: 0.5rem;
+                    outline: none;
+                    font: inherit;
+                    font-size: 1.5rem;
+                    padding-left: 1.6rem;
+                }
+                button {
+                    position: absolute;
+                    inset: 4px 4px 4px auto;
+                    border-radius: 4px;
+                    border: none;
+                    background-color: var(--primary);
+                    color: var(--text-header);
+                    min-width: 5rem;
+                    font-size: 1.6rem;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                    &:hover {
+                        opacity: 0.8;
+                    }
+                }
+            }
+        }
+        .suggest {
+            ul {
+                display: flex;
+                padding-top: 0.5rem;
+                li {
+                    padding-left: 1.3rem;
+                    font-size: 1.2rem;
+                }
+            }
+        }
+    }
+    .mobile-nav-btn {
+        display: none;
+    }
+    .cart {
+        position: relative;
+        flex: 1;
+        font-size: 3rem;
+        padding: 0 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+
+        .cart-amount {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            padding: 0 6px;
+            background-color: rgb(255, 255, 255);
+            border-radius: 1rem;
+            border: 2px solid var(--primary);
+            height: 20px;
+            bottom: 60%;
+            left: 50%;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--primary);
+        }
+    }
+}
+
+@media (max-width: $lg) {
+    .search {
+        .logo {
+            display: none;
+        }
+        .control .suggest {
+            display: none;
+        }
+    }
+}
+
+@media (max-width: $md) {
+    .search {
+        justify-content: space-between;
+        .logo {
+            justify-content: center;
+            display: flex;
+        }
+        .control {
+            display: none;
+        }
+        .cart {
+            flex: 0;
+        }
+    }
+}

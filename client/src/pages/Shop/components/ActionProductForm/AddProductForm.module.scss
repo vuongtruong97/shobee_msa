@@ -1,0 +1,92 @@
+.form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    padding: 1rem;
+    & > * {
+        margin-bottom: 0.5rem;
+    }
+    .formRow {
+        display: flex;
+        width: 100%;
+        margin-left: -0.5rem;
+        margin-right: -0.5rem;
+        & > * {
+            padding: 0.5rem;
+            flex: 1;
+        }
+        .textarea {
+            textarea {
+                resize: none;
+                width: 100%;
+                border: 1px solid #ccc;
+                height: 15rem;
+                padding: 1rem;
+                font-size: 1.6rem;
+                font-family: inherit;
+                &:focus {
+                    outline: none;
+                }
+                &::-webkit-scrollbar {
+                    width: 1.4rem;
+                }
+                &::-webkit-scrollbar-track {
+                    background: transparent;
+                }
+                &::-webkit-scrollbar-thumb {
+                    border: 4px solid rgba(0, 0, 0, 0);
+                    background-clip: padding-box;
+                    border-radius: 9999px;
+                    background-color: #00000071;
+                }
+            }
+        }
+        .fileUpload {
+            input {
+                display: none;
+            }
+            .uploadBtn {
+                font-size: 2.7rem;
+                padding-top: 0.6rem;
+                color: var(--success);
+                box-shadow: 2px 2px 5px #b3b3b3, -2px -2px 3px #fff;
+                border-radius: 999px;
+                display: flex;
+                cursor: pointer;
+                justify-content: center;
+                align-items: center;
+                height: 3.7rem;
+            }
+        }
+        .previewImg {
+            height: 30rem;
+            width: 30rem;
+            margin: 0.5rem;
+            overflow-y: scroll;
+            &::-webkit-scrollbar {
+                width: 1.4rem;
+            }
+            &::-webkit-scrollbar-track {
+                background: transparent;
+            }
+            &::-webkit-scrollbar-thumb {
+                border: 4px solid rgba(0, 0, 0, 0);
+                background-clip: padding-box;
+                border-radius: 9999px;
+                background-color: #00000071;
+            }
+            .img {
+                margin: 0 auto;
+                width: 100%;
+                padding-top: 100%;
+                background-size: cover;
+            }
+        }
+    }
+    .submit {
+        margin-top: 1rem;
+        float: left;
+    }
+}

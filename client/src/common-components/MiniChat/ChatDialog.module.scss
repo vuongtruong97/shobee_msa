@@ -1,0 +1,145 @@
+$miniChatWidth: 50rem;
+$miniChatHeight: 38rem;
+$chatHeaderHeight: 4rem;
+$chatControlHeight: 7rem;
+$convHeadHeight: 4.8rem;
+
+.conversation_dialog {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    .conv_head {
+        padding: 1.5rem;
+        font-weight: 600;
+        border-bottom: 1px solid #ccc;
+        height: $convHeadHeight;
+    }
+    .conversation_wrap {
+        overflow-y: scroll;
+        height: calc(
+            $miniChatHeight - $chatHeaderHeight - $chatControlHeight - $convHeadHeight
+        );
+
+        scrollbar-width: auto;
+        scrollbar-color: #8b8b8b #ffffff;
+
+        &::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: #ffffff;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: #8b8b8b;
+            border-radius: 10px;
+            border: 3px solid #ffffff;
+        }
+        .conv_list_chat {
+            padding: 0 0.5rem;
+            & > * {
+                margin-top: 2.5rem;
+                display: flex;
+                align-items: center;
+                position: relative;
+
+                & > p {
+                    max-width: 90%;
+                    padding: 0.8rem;
+                    background-color: #edeef0;
+                    border-radius: 0.5rem;
+                    overflow: hidden;
+                }
+                & .createdAt {
+                    position: absolute;
+                    bottom: 100%;
+                    font-size: 1.1rem;
+                    padding: 0 1rem;
+                }
+            }
+            &:last-child {
+                margin-bottom: 0.5rem;
+            }
+            .conv_start {
+                color: var(--text-secondary);
+                justify-content: center;
+            }
+            .leftMess {
+            }
+            .rightMess {
+                & > p {
+                    background-color: #ccdcfd;
+                }
+                flex-direction: row-reverse;
+            }
+        }
+    }
+    .conv_chat_control {
+        border-top: 1px solid #ccc;
+        display: flex;
+        flex-direction: column;
+        min-height: $chatControlHeight;
+        padding: 0.6rem 0 0.6rem 0.8rem;
+        .conv_chat_input {
+            display: flex;
+            flex-direction: column;
+            & > textarea {
+                resize: none;
+                border: none;
+                outline: none;
+                height: 3rem;
+                font-size: 1.4rem;
+                scrollbar-width: auto;
+                scrollbar-color: #8b8b8b #ffffff;
+
+                &::-webkit-scrollbar {
+                    width: 10px;
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: #ffffff;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background-color: #8b8b8b;
+                    border-radius: 10px;
+                    border: 3px solid #ffffff;
+                }
+            }
+        }
+        .conv_chat_option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #8ea4d1;
+            .leftOptions {
+                display: flex;
+                align-items: center;
+                & > *:not(:first-child) {
+                    margin-left: 1rem;
+                }
+                .conv_chat_icon {
+                    position: relative;
+                    width: fit-content;
+                    & > svg {
+                        font-size: 1.6rem;
+                    }
+                    .conv_chat_emoji_picker {
+                        position: absolute;
+                        bottom: 5rem;
+                        right: 50%;
+                    }
+                }
+            }
+            .sendBtn {
+                border: none;
+                background-color: transparent;
+                color: #8ea4d1;
+                & > svg {
+                    font-size: 1.8rem;
+                }
+            }
+        }
+    }
+}

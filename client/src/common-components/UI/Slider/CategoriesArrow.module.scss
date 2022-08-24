@@ -1,0 +1,35 @@
+$arrow_size: 4rem;
+.arrow-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: $arrow_size;
+    height: $arrow_size;
+    z-index: 1;
+    background-color: #fff;
+    box-shadow: 0 1px 12px 0 rgba(0, 0, 0, 12%);
+    border-radius: 999px;
+    cursor: pointer;
+    opacity: 0.4;
+    &:hover {
+        opacity: 1;
+    }
+    svg {
+        color: var(--primary);
+        font-size: 2rem;
+    }
+}
+
+.next {
+    right: -2rem;
+    ::before {
+        content: '';
+    }
+}
+
+.prev {
+    left: -2rem;
+}

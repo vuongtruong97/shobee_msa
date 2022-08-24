@@ -8,6 +8,7 @@ router.get(
     '/api/products/products',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
+            // @ts-ignore
             const products = await Product.find({}).cache({ time: 60 })
 
             res.send({

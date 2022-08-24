@@ -1,0 +1,54 @@
+// @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;1,400;1,500;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;800&display=swap');
+
+html {
+    // font-family: 'Poppins', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-size: 62.5%;
+
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    &::selection {
+        color: #fff;
+        background: var(--primary);
+    }
+}
+
+ol,
+ul {
+    list-style: none;
+}
+li {
+    list-style-type: none;
+}
+a {
+    text-decoration: none;
+    color: var(--primary);
+}
+h1,
+h1,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+input {
+    color: var(--text-primary);
+}
+
+// custom toastify
+
+.Toastify__toast {
+    font-size: 1.6rem;
+    background-color: (--error-bg);
+    height: 80px;
+}

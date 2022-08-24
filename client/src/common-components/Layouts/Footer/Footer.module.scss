@@ -1,0 +1,127 @@
+.footer {
+    font-size: 1.4rem;
+    background-color: #fff;
+    .line {
+        border: 2px solid var(--primary);
+    }
+    & > div {
+        margin-top: 5rem;
+    }
+    .title {
+        font-size: 1.4rem;
+        padding: 1rem 0;
+        text-transform: uppercase;
+        font-weight: 500;
+    }
+    .paragraph {
+        font-size: 1.2rem;
+        font-family: Roboto, sans-serif;
+        line-height: 1.4;
+    }
+    .paragraph2 {
+        text-align: center;
+        line-height: 1.7;
+        font-size: 1.3rem;
+    }
+    .section {
+        padding-bottom: 2rem;
+        .about {
+            padding: 1rem 0;
+        }
+        .options {
+            .imageGrid {
+                padding-right: 20%;
+                .imageBg {
+                    width: 5.5rem;
+                    height: 3rem;
+                    margin: auto;
+                    margin-bottom: 1rem;
+                }
+            }
+            .option {
+                font-size: 1.3rem;
+                color: var(--text-secondary);
+                margin-bottom: 1rem;
+                cursor: pointer;
+                & > svg {
+                    margin-right: 0.5rem;
+                }
+                &:hover {
+                    color: var(--primary);
+                }
+            }
+            .dowload {
+                display: flex;
+                .qrCode {
+                    height: 9rem;
+                    width: 9rem;
+                    background-position: center;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    border: 1px solid #ccc;
+                    margin-right: 0.5rem;
+                }
+            }
+            .platform {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                .platformPng {
+                    width: 9rem;
+                    height: 2rem;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                }
+            }
+        }
+    }
+
+    .policy {
+        color: var(--text-secondary);
+        margin-bottom: 6rem;
+        .policyTitle {
+            display: flex;
+            justify-content: center;
+            padding: 1rem 0;
+            & > * {
+                margin: 0 1rem;
+            }
+            .licenseImg {
+                height: 4.5rem;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .footer {
+        padding: 0 1rem;
+        .title {
+            text-align: center;
+        }
+    }
+    .option {
+        text-align: center !important;
+    }
+    .imageGrid {
+        padding: 0 !important;
+    }
+    .platform {
+        .platformPng {
+            width: 7rem !important;
+            height: 2rem;
+        }
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .platform {
+        .platformPng {
+            width: 7rem !important;
+            height: 2rem;
+        }
+    }
+    .dowload {
+        justify-content: center;
+    }
+}

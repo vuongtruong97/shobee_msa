@@ -1,0 +1,86 @@
+.productItem {
+    margin-top: 1rem;
+    background-color: #fff;
+    box-shadow: 1px 1px 3px #ccc;
+    display: flex;
+    flex-direction: column;
+    transition: linear 0.15s;
+    cursor: pointer;
+    position: relative;
+    color: var(--text-primary);
+    &:hover {
+        transform: translateY(-1px);
+    }
+    .discount {
+        position: absolute;
+        background-color: rgba(255, 212, 36, 0.9);
+        padding: 0.5rem 0.5rem 0;
+        color: #fff;
+        top: -1px;
+        right: -1px;
+        font-size: 1.4rem;
+        text-align: center;
+        width: 5rem;
+
+        &::after {
+            content: '';
+            position: absolute;
+            display: block;
+            left: 0;
+            bottom: -13px;
+            border-left: 2.5rem solid rgba(255, 212, 36, 0.9);
+            border-right: 2.5rem solid rgba(255, 212, 36, 0.9);
+            border-bottom: 1.3rem solid transparent;
+
+            // background-color: rgba(255, 212, 36, 0.9);
+        }
+
+        .discountPer {
+            color: var(--primary);
+        }
+    }
+    .image {
+        width: 100%;
+        padding-top: 100%;
+        background-size: cover;
+        background-position: center;
+    }
+    .info {
+        display: flex;
+        flex-direction: column;
+        padding: 0.8rem;
+        flex: 1;
+        & > * {
+            margin-bottom: 0.4rem;
+        }
+        .name {
+            font-size: 1.4rem;
+            word-wrap: break-word;
+            white-space: normal;
+            overflow: hidden;
+            display: -webkit-box;
+            text-overflow: ellipsis;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            line-height: 1.5rem;
+            min-height: 3rem;
+        }
+        .tag {
+            border: 1px solid var(--primary);
+            width: fit-content;
+            padding: 0 0.3rem;
+            color: var(--primary);
+        }
+        .price {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        .rating {
+            display: flex;
+            font-size: 1.3rem;
+        }
+        .location {
+            font-size: 1.3rem;
+        }
+    }
+}

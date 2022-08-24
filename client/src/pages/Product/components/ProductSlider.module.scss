@@ -1,0 +1,27 @@
+.prod_slider_img {
+    background-position: center;
+    background-size: contain;
+    padding-top: 100%;
+}
+.prod_paging_img {
+    background-position: center;
+    background-size: cover;
+    padding-top: 60%;
+    width: 100%;
+    border: 2px solid #fff;
+    &:hover {
+        border-color: var(--primary);
+    }
+}
+.list_paging {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    & > * {
+        flex: 25% 0 !important;
+
+        margin: 0 !important;
+        height: 100% !important;
+        display: block;
+    }
+}

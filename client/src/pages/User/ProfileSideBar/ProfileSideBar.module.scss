@@ -1,0 +1,62 @@
+.sideBar {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+    & > * {
+        margin-bottom: 1rem;
+    }
+
+    .userAvatar {
+        display: flex;
+        align-items: center;
+        .avatar {
+            width: 5rem;
+            height: 5rem;
+            background-position: center;
+            background-size: cover;
+            border-radius: 999px;
+        }
+    }
+    .user_name {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        & > span {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: 600;
+            width: 70%;
+        }
+    }
+    .options {
+        .option {
+            margin-bottom: 1rem;
+            min-height: 3rem;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            cursor: pointer;
+            & > svg {
+                margin-right: 1rem;
+            }
+        }
+        .profile_info {
+            user-select: none;
+
+            .info {
+                padding-left: 2rem;
+                & > a {
+                    color: #000;
+                }
+                .accout_option {
+                    display: flex;
+                    align-items: center;
+                    min-height: 3rem;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,29 @@
+.auth-nav {
+    height: 84px;
+    color: var(--primary);
+    .auth-container {
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+        a {
+            font-size: 1.6rem;
+        }
+        .left-nav {
+            display: flex;
+            align-items: center;
+            .logo {
+                width: 13rem;
+                fill: var(--primary);
+            }
+            span {
+                font-size: 2rem;
+                color: var(--text-primary);
+                font-weight: 500;
+                padding-left: 2rem;
+                margin-top: 1rem;
+            }
+        }
+    }
+}

@@ -1,0 +1,33 @@
+.arrow-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 60px;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.584);
+    border-radius: 0.4rem;
+    cursor: pointer;
+    opacity: 0.4;
+    &:hover {
+        opacity: 1;
+    }
+    svg {
+        color: var(--primary);
+        font-size: 2rem;
+    }
+}
+
+.next {
+    right: 0;
+    ::before {
+        content: '';
+    }
+}
+
+.prev {
+    left: 0;
+}

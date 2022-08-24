@@ -1,0 +1,15 @@
+.auth-container {
+    background-color: #ee4e2e;
+    // background-color: var(--primary);
+
+    .auth-body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .banner {
+            padding-top: 100%;
+            background-position: left;
+            background-size: cover;
+        }
+    }
+}

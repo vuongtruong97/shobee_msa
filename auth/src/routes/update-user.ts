@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express'
 import { User } from '../models/User'
-import { isAuthenticated } from '@vuongtruongnb/common'
+import { BadRequestError, isAuthenticated } from '@vuongtruongnb/common'
 import { diskUpload, uploadToCloudinary } from '../utils/uploadImage'
 import { removeUndefindedAttrs } from '../utils/removeUndefindAttrs'
 import { updateValidator } from '../validators/update-user-validator'
@@ -50,16 +50,19 @@ router.patch(
             }
             removeUndefindedAttrs(newInfo)
 
-            const result = await User.findOneAndUpdate(
-                { id },
-                {
-                    ...newInfo,
-                }
-            )
+            console.log(newInfo)
+
+            const result = await User.findByIdAndUpdate(id, {
+                ...newInfo,
+            })
+
+            if (!result) {
+                throw new BadRequestError('Đã có lỗi xảy ra, vui lòng thử lại sau')
+            }
 
             res.json({
                 success: true,
-                message: 'Update successfully',
+                message: 'Cập nhật thông tin thành công',
                 data: result,
             })
         } catch (error) {

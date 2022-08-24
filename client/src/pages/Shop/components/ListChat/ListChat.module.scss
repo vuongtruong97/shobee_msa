@@ -1,0 +1,48 @@
+.list {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    height: 100%;
+    .owner_info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 3rem;
+        .owner_name {
+            font-size: 1.6rem;
+            font-weight: 600;
+            padding-left: 1rem;
+        }
+    }
+    .list_chat {
+        & > * {
+            margin-bottom: 1rem;
+        }
+        .conv_wrap {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            .conv_info {
+                display: flex;
+                flex-direction: column;
+                padding-left: 1rem;
+                flex: 1;
+                .conv_name {
+                    font-size: 1.5em;
+                    font-weight: 500;
+                }
+                .conv_about {
+                    color: brown;
+                }
+            }
+        }
+    }
+}
+
+.avatar {
+    height: 4rem;
+    width: 4rem;
+    background-size: cover;
+    background-position: center;
+    border-radius: 999px;
+    border: 1px solid rgb(173, 173, 173);
+}

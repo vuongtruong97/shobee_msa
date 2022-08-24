@@ -1,0 +1,101 @@
+.wrap {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    font-size: 1.6rem;
+    & > * {
+        margin-bottom: 1rem;
+        width: 100%;
+        padding: 1rem;
+    }
+    .head {
+        font-size: 1.8rem;
+        border-bottom: 1px solid #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .form {
+        & > * {
+            margin-bottom: 1rem;
+            width: 100%;
+            padding: 1rem;
+        }
+        .images {
+            display: flex;
+            flex-direction: column;
+            .note {
+                color: var(--caution);
+                padding-left: 1rem;
+                font-size: 1.4rem;
+            }
+            .error {
+                color: var(--error);
+                font-size: 1.3rem;
+            }
+            .image_label {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 5rem;
+                color: var(--primary);
+                font-weight: 300;
+                cursor: pointer;
+                height: 10rem;
+                width: 10rem;
+                border: 1px dashed var(--primary);
+                position: relative;
+            }
+            .list_image {
+                display: flex;
+                padding: 1rem 0;
+                flex-wrap: wrap;
+                & > * {
+                    margin-left: 1rem;
+                    margin-bottom: 1rem;
+                }
+                .image {
+                    position: absolute;
+                    background-position: center;
+                    background-size: cover;
+                    height: 10rem;
+                    width: 10rem;
+                    background-color: #fff;
+                    border: 1px solid #ccc;
+                    z-index: 2;
+                    .deleteImg {
+                        visibility: hidden;
+                        transition: linear 0.3s;
+                        position: absolute;
+                        inset: 0 0 0 0;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        color: #fff;
+                    }
+                    &:hover {
+                        .deleteImg {
+                            visibility: visible;
+                            background-color: rgba(0, 0, 0, 0.7);
+                        }
+                    }
+                }
+            }
+        }
+        .description {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail {
+            & > * {
+                margin-bottom: 1rem;
+                padding: 0.5rem 0;
+            }
+        }
+        .sub_title {
+            font-size: 1.8rem;
+            color: #000;
+        }
+    }
+}

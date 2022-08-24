@@ -1,0 +1,102 @@
+$miniChatWidth: 50rem;
+$miniChatHeight: 38rem;
+$chatHeaderHeight: 4rem;
+$chatControlHeight: 7rem;
+$convHeadHeight: 4.8rem;
+
+.miniChat {
+    position: fixed;
+    bottom: 0;
+    right: 0.8rem;
+    z-index: 99999;
+    font-size: 1.4rem;
+    .entry {
+        position: relative;
+        width: 10rem;
+        height: 5rem;
+        display: flex;
+        align-items: center;
+        background-color: #fff;
+        border-radius: 0.4rem 0.4rem 0 0;
+        box-shadow: 0 4px 20px 0 rgb(28 28 51 / 16%);
+        transform: translateX(0);
+        transform-origin: bottom right;
+        transition: background-color 0.15s ease-out;
+        //
+        cursor: pointer;
+        padding: 12px;
+        color: var(--primary);
+        .icon {
+            font-size: 2.4rem;
+            margin-right: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .title {
+            font-size: 1.7rem;
+            font-weight: 500;
+        }
+    }
+    .chatBox {
+        position: relative;
+        max-width: $miniChatWidth;
+        height: $miniChatHeight;
+        background-color: #fff;
+        border-radius: 0.4rem 0.4rem 0 0;
+        box-shadow: #4a4a4e29 0px 4px 20px 0px;
+        transform: translateX(0px);
+        transition: width 0.25s cubic-bezier(0.4, 0.8, 0.74, 1) 0s;
+        display: flex;
+        flex-direction: column;
+        .chatHeader {
+            display: flex;
+            width: 100%;
+            height: $chatHeaderHeight;
+            align-items: center;
+            justify-content: space-between;
+            box-sizing: border-box;
+            border-radius: 4px 4px 0px 0px;
+            box-shadow: rgb(0 0 0 / 8%) 0px 1px 4px 0px;
+            .logo {
+                display: flex;
+                padding: 0px 12px;
+                align-items: center;
+                justify-content: flex-start;
+                font-size: 1.8rem;
+                font-weight: 500;
+                color: var(--primary);
+                user-select: none;
+            }
+            .operator {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                margin-right: 1.2rem;
+                .controlDialog,
+                .chatMinimize {
+                    cursor: pointer;
+                    margin-left: 1.6rem;
+                    font-size: 1.6rem;
+                }
+            }
+        }
+        .chatWindow {
+            display: flex;
+            flex: 1;
+            .chatIndex {
+                position: relative;
+                flex: 1;
+                width: 286px;
+                opacity: 1;
+                border-right: 1px solid #e4e6e8;
+                transform: translateX(0);
+                transition: width 0.25s cubic-bezier(0.4, 0.8, 0.74, 1), border 0.1s ease,
+                    opacity 0.1s ease 0.15s;
+                z-index: 999;
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    }
+}

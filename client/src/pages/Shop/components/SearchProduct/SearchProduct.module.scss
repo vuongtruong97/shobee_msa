@@ -1,0 +1,33 @@
+.search {
+    width: 100%;
+    height: 10rem;
+    display: flex;
+    align-items: center;
+    border-radius: 1rem;
+    padding: 0 5rem;
+    .addProduct {
+        flex: 40% 0;
+    }
+    .searchForm {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .searchInput {
+            height: 4rem;
+            width: 100%;
+            border: none;
+            background-color: #d8d8d8;
+            box-shadow: inset 2px 2px 5px #b3b3b3, inset -2px -2px 5px #fff;
+            border-radius: 999px;
+            padding: 2rem;
+            font-size: 1.5rem;
+            font-family: inherit;
+            font-weight: 500;
+            &:focus,
+            &:active {
+                outline-color: var(--primary);
+            }
+        }
+    }
+}

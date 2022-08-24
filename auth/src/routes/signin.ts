@@ -1,9 +1,8 @@
 import { NextFunction, Router, Request, Response } from 'express'
 import { signinValidator } from '../validators/signin-validator'
 import { User } from '../models/User'
-import { BadRequestError, Jsonwebtoken } from '@vuongtruongnb/common'
+import { BadRequestError, Jsonwebtoken, redisClient } from '@vuongtruongnb/common'
 import { Password } from '../utils/password'
-import { redisClient } from '../utils/redis'
 
 const router = Router()
 
@@ -11,34 +10,33 @@ router.post(
     '/api/users/signin',
     signinValidator,
     async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const { email, password } = req.body
+        const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+        const loginFailedKey = `login_failed${ip}`
 
+        try {
+            const failedCount = (await redisClient.get(loginFailedKey)) || 0
+
+            // if login failed over 5 times
+            if (failedCount >= 5) {
+                const ttl = await redisClient.ttl(loginFailedKey)
+                throw new BadRequestError(
+                    `Nhập sai mật khẩu quá 5 lần,thử lại sau ${ttl}s`
+                )
+            }
+
+            const { email, password } = req.body
             const existedUser = await User.findOne({ email }).select('password')
 
             if (!existedUser) {
+                await redisClient.incr(loginFailedKey) // increase failed 1
+                await redisClient.expire(loginFailedKey, 120) // set NX  not working 😪
                 throw new BadRequestError('Thông tin đăng nhập không chính xác !')
             }
 
             const isMatch = await Password.comparePassword(password, existedUser.password)
-
-            const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress
-
-            const failedCount = (await redisClient.get(`login_failed${ip}`)) || 0
-            // if login failed over 5 times
-            if (failedCount >= 5) {
-                const ttl = await redisClient.ttl(`login_failed${ip}`)
-                throw new BadRequestError(
-                    `Nhập sai mật khẩu quá 5 lần,thừ lại sau ${ttl}s`
-                )
-            }
-
             if (!isMatch) {
-                await redisClient.incr(`login_failed${ip}`) // increase failed 1
-                await redisClient.expire(`login_failed${ip}`, 120) // set NX  not working 😪
-
-                const ttl = await redisClient.ttl(`login_failed${ip}`)
-                console.log(ttl)
+                await redisClient.incr(loginFailedKey) // increase failed 1
+                await redisClient.expire(loginFailedKey, 120) // set NX  not working 😪
                 throw new BadRequestError('Thông tin đăng nhập không chính xác !')
             }
 

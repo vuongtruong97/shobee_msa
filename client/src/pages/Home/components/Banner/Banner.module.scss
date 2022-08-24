@@ -1,0 +1,11 @@
+.sub-banner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+    .sub-banner-item {
+        padding-top: 28.5%;
+        background-position: center;
+        background-size: cover;
+    }
+}

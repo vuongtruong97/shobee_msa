@@ -1,6 +1,7 @@
 import { Schema, Document, Model, model } from 'mongoose'
 import { Password } from '../utils/password'
 import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
+import { ROLES } from '@vuongtruongnb/common'
 
 interface UserAttrs {
     full_name?: string
@@ -20,7 +21,7 @@ interface UserAttrs {
     avatar_url?: string
     google_id?: string
     facebook_id?: string
-    role?: string
+    role?: ROLES
     shop?: string
 }
 
@@ -42,39 +43,40 @@ interface UserDoc extends Document {
     avatar_url: string
     google_id: string
     facebook_id: string
-    role: string
-    shop: string
+    role: ROLES
+    shop?: string
 }
 
 interface UserModel extends Model<UserDoc> {
     build(attrs: UserAttrs): UserDoc
 }
 
-const userSchema = new Schema(
-    {
-        full_name: { type: String },
-        gender: { type: Number },
-        birth_day: { type: String },
-        address: {
-            province: Object,
-            district: Object,
-            ward: Object,
-        },
-        not_new_user: { type: Boolean },
-        email: { type: String, required: true },
-        email_verified: { type: Boolean },
-        phone: { type: String },
-        phone_verified: { type: Boolean },
-        password: { type: String, select: false, required: true },
-        token: { type: String },
-        avatar_url: { type: String },
-        google_id: { type: String },
-        facebook_id: { type: String },
-        role: { type: String, default: 'USER' },
-        shop: { type: Schema.Types.ObjectId, ref: 'Shop' },
-    }
-    // { timestamps: true }
-)
+const userSchema = new Schema({
+    full_name: { type: String },
+    gender: { type: Number },
+    birth_day: { type: String },
+    address: {
+        province: Object,
+        district: Object,
+        ward: Object,
+    },
+    not_new_user: { type: Boolean },
+    email: { type: String, required: true },
+    email_verified: { type: Boolean },
+    phone: { type: String },
+    phone_verified: { type: Boolean },
+    password: { type: String, select: false, required: true },
+    token: { type: String },
+    avatar_url: { type: String },
+    google_id: { type: String },
+    facebook_id: { type: String },
+    role: {
+        type: String,
+        default: 'USER',
+        enum: Object.values(ROLES),
+    },
+    shop: { type: Schema.Types.ObjectId },
+})
 
 userSchema.plugin(updateIfCurrentPlugin)
 userSchema.set('versionKey', 'version')

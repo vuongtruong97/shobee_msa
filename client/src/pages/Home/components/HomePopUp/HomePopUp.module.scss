@@ -1,0 +1,69 @@
+.popup {
+    .backdrop {
+        width: 100%;
+        height: 100%;
+        top: 0px;
+        left: 0px;
+        position: fixed;
+        background-color: rgba(0, 0, 0, 0.4);
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+        place-content: center;
+        -webkit-box-pack: center;
+        z-index: 9000;
+        .content {
+            -webkit-box-flex: 0;
+            flex: 0 1 auto;
+            position: relative;
+            width: 80%;
+            max-width: 438px;
+            max-height: 100%;
+            .simpleBanner {
+                background-position: center center;
+                background-size: 60px 60px;
+                background-repeat: no-repeat;
+                //
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                position: relative;
+                img {
+                    display: block;
+                    width: 100%;
+                    overflow: hidden;
+                }
+            }
+            .closeBtnArea {
+                position: absolute;
+                display: block;
+                top: 0;
+                right: 0;
+                width: 15%;
+                height: 19%;
+                cursor: pointer;
+                .closeBtn {
+                    cursor: pointer;
+                    user-select: none;
+                    line-height: 4rem;
+                    height: 3rem;
+                    width: 3rem;
+                    display: flex;
+                    -webkit-box-align: center;
+                    align-items: center;
+                    -webkit-box-pack: center;
+                    justify-content: center;
+                    position: absolute;
+                    box-sizing: border-box;
+                    background: rgba(255, 255, 255, 0.5);
+                    top: -1rem;
+                    right: -1rem;
+                    border-radius: 2rem;
+                    border: 0.3rem solid rgba(255, 255, 255, 0.5);
+                    font-size: 2rem;
+                    color: var(--primary);
+                }
+            }
+        }
+    }
+}

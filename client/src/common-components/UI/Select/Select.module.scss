@@ -1,0 +1,38 @@
+.wrap {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    label {
+        font-size: 1.8rem;
+    }
+    .select {
+        border: 1px solid #ccc;
+        height: 3.7rem;
+        line-height: 4rem;
+        font-size: 1.6rem;
+        padding: 0 1.5rem;
+        font-family: inherit;
+        background-color: transparent;
+        cursor: pointer;
+        color: var(--text-secondary);
+        font-weight: 500;
+        &:focus {
+            outline: none;
+        }
+        option {
+            color: var(--primary);
+        }
+        &.error {
+            border: 1px solid var(--error);
+            background-color: var(--error-bg);
+        }
+    }
+    .error_message {
+        display: block;
+        margin-top: 0.5rem;
+        margin-left: 0.5rem;
+        font-size: 1.3rem;
+        color: var(--error);
+    }
+}

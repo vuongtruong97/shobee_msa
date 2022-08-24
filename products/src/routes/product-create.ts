@@ -4,6 +4,8 @@ import { BadRequestError, isAuthenticated } from '@vuongtruongnb/common'
 import { diskUpload } from '../utils/uploadImage'
 import { imageUploadQueue, QueueModel } from '../queues/image-upload-queue'
 import { productCreateValidator } from '../validators/product-create-validator'
+// import { ProductCreatedPublisher } from '../events/publishers/product-created-publisher'
+// import { rabbitWrapper } from '../rabbitmq-wrapper'
 
 const router = Router()
 
@@ -46,6 +48,20 @@ router.post(
                 image_paths: files['list'].map((file: Express.Multer.File) => file.path),
                 model: QueueModel.Product,
             })
+
+            // await new ProductCreatedPublisher(
+            //     rabbitWrapper.channels.productCreatedChannel
+            // ).publish({
+            //     id: product.id,
+            //     name: product.name,
+            //     price: product.price,
+            //     quantity: product.quantity,
+            //     discount: product.discount,
+            //     shop: product.shop,
+            //     image_url: product.image_urls[0] || '',
+            //     version: product.version,
+            //     status: 'active',
+            // })
 
             res.status(200).json({
                 success: true,
