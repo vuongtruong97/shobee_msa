@@ -66,14 +66,14 @@ const productSchema = new Schema(
         expiry: String,
         price: { type: Number, required: true },
         quantity: { type: Number, required: true },
-        status: { type: String },
+        status: { type: String, enum: ['OLD', 'NEW'], default: 'NEW' },
         image_urls: [{ type: String }],
         video: { type: Object },
         currency: { type: String, default: 'VND' },
         discount: String,
-        shop: { type: Schema.Types.ObjectId },
+        shop: { type: Schema.Types.ObjectId, required: true },
         brand: String,
-        category: String,
+        category: { type: Schema.Types.ObjectId, required: true },
         sold: Number,
         liked_count: Number,
         specs: [{ type: Object }],
@@ -87,6 +87,7 @@ const productSchema = new Schema(
     { timestamps: true }
 )
 
+productSchema.index({ name: 'text' })
 productSchema.set('versionKey', 'version')
 productSchema.plugin(updateIfCurrentPlugin)
 

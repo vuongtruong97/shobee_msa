@@ -5,7 +5,6 @@ import {
     ProductCreatedEvent,
     QueuesName,
     RoutingKeys,
-    ROLES,
 } from '@vuongtruongnb/common'
 import { ConsumeMessage, Channel } from 'amqplib'
 import { Product } from '../../models/Product'

@@ -7,13 +7,18 @@ import { Product } from '../models/Product'
 const router = Router()
 
 router.get(
-    '/api/orders/:id',
+    '/api/orders/list/:id',
     isAuthenticated,
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id } = req.params
+            const { limit = 10, sort = 'desc' } = req.query
 
-            const orders = await Order.find({ shop_id: id })
+            const orders = await Order.find({
+                $or: [{ shop_id: id }, { buyer: id }],
+            })
+                .limit(+limit)
+                .sort('asc')
 
             res.send({
                 success: true,

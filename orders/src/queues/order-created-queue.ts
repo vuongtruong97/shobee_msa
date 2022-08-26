@@ -20,9 +20,9 @@ orderCreatedInternalQueue.process(async (job) => {
         console.log('run order created queue')
         console.log(job.data)
 
-        // await new OrderCreatedPublisher(
-        //     rabbitWrapper.channels.orderCreatedChannel
-        // ).publish({ products: job.data.products })
+        await new OrderCreatedPublisher(
+            rabbitWrapper.channels.orderCreatedChannel
+        ).publish({ products: job.data.products })
     } catch (error) {
         console.log(error)
     }

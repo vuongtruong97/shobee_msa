@@ -16,10 +16,9 @@ export const productCreateValidator = [
         .withMessage('Mô tả sản phẩm từ 55 đến 1155 ký tự'),
     body('category')
         .notEmpty()
-        .withMessage('Vui lòng nhập tên danh mục')
-        .trim()
-        .isLength({ min: 5, max: 155 })
-        .withMessage('Tên hiển thị từ 5 đến 155 ký tự'),
+        .withMessage('Vui lòng chọn danh mục')
+        .isMongoId()
+        .withMessage('Id danh mục không đúng vui lòng kiểm tra lại'),
     body('price')
         .notEmpty()
         .withMessage('Vui lòng nhập giá sản phẩm')
@@ -33,8 +32,7 @@ export const productCreateValidator = [
     body('shop')
         .notEmpty()
         .withMessage('đã xảy ra lỗi,shop id là bắt buộc')
-        .trim()
-        .isLength({ min: 5, max: 155 })
-        .withMessage('Tên hiển thị từ 5 đến 155 ký tự'),
+        .isMongoId()
+        .withMessage('id cửa hàng không đúng vui lòng kiểm tra lại'),
     validateRequest,
 ]

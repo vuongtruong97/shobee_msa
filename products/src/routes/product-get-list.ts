@@ -10,7 +10,6 @@ router.get(
         try {
             // @ts-ignore
             const products = await Product.find({}).cache({ time: 60 })
-
             res.send({
                 success: true,
                 data: products,

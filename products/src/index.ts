@@ -1,7 +1,8 @@
 import mongoose from 'mongoose'
 import { connectRedis } from '@vuongtruongnb/common'
-import { rabbitWrapper } from './rabbitmq-wrapper'
 import { app } from './app'
+import { rabbitWrapper } from './rabbitmq-wrapper'
+import { ProductCreatedConsumer } from './events/consumers/order-create-consumer'
 
 const start = async () => {
     if (!process.env.JWT_KEY) {
@@ -18,9 +19,11 @@ const start = async () => {
     try {
         await connectRedis()
         await mongoose.connect(`${process.env.MONGO_URI}/products`)
+        console.log('Connected to products mongodb 😁')
 
         await rabbitWrapper.createConnection(process.env.RABBIT_URI + '?heartbeat=60')
-        console.log('Connected to products mongodb 😁')
+
+        await new ProductCreatedConsumer(rabbitWrapper.consumerConnection).listen()
 
         app.listen(3000, () => {
             console.log('Products service run on port 3000 😎')
