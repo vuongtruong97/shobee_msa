@@ -7,8 +7,7 @@ import { errorHandler, NotFoundError } from '@vuongtruongnb/common'
 
 import { ProductCreate } from './routes/product-create'
 import { ProductGetOneRouter } from './routes/product-get-one'
-import { ProductGetListRouter } from './routes/product-get-list'
-import { ProductTextSearchRouter } from './routes/product-text-search'
+import { ProductTextSearchRouter } from './routes/product-search'
 
 import { shopCreateRouter } from './routes/shop-create'
 
@@ -38,7 +37,6 @@ app.use(
 
 app.use(ProductCreate)
 app.use(ProductGetOneRouter)
-app.use(ProductGetListRouter)
 app.use(ProductTextSearchRouter)
 
 app.use(shopCreateRouter)

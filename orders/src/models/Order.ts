@@ -1,5 +1,6 @@
 import { Schema, Document, Model, model } from 'mongoose'
 import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
+import { OrderStatus } from '@vuongtruongnb/common'
 
 interface OrderAttrs {
     shop_id: string
@@ -10,7 +11,7 @@ interface OrderAttrs {
     }[]
     product_count: number
     address: string
-    status: string
+    status: OrderStatus
     ship_info?: any
     payment_status?: boolean
 
@@ -31,7 +32,7 @@ interface OrderDoc extends Document {
     }[]
     product_count: number
     address: string
-    status: string
+    status: OrderStatus
     ship_info?: any
     payment_status: boolean
     ship_payment: number
@@ -54,7 +55,11 @@ const orderSchema = new Schema({
     ],
     product_count: Number,
     address: String,
-    status: String,
+    status: {
+        type: String,
+        enum: Object.values(OrderStatus),
+        default: OrderStatus.PENDING,
+    },
     ship_info: String,
     payment_status: { type: Boolean, default: false },
     ship_payment: Number,
