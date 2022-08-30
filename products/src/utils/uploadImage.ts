@@ -40,24 +40,31 @@ const diskUpload = multer({
     fileFilter,
 })
 
-async function uploadToCloudinary(locaFilePath: string, options?: UploadApiOptions) {
+async function uploadToCloudinary(localFilePath: string, options?: UploadApiOptions) {
     try {
-        const result = await v2.uploader.upload(locaFilePath, options)
-        fs.unlinkSync(locaFilePath)
+        console.log(localFilePath)
+        const result = await v2.uploader.upload(localFilePath, options)
+        if (result) {
+            // fs.unlinkSync(localFilePath)
+        }
         return result
     } catch (error) {
-        fs.unlinkSync(locaFilePath)
         console.log(error)
+    } finally {
+        // fs.unlinkSync(localFilePath)
     }
 }
 
-async function uploadMultiToCloudinary(locaFilePath: string, options?: UploadApiOptions) {
+async function uploadMultiToCloudinary(
+    localFilePath: string,
+    options?: UploadApiOptions
+) {
     try {
         // const result = await v2.uploader.multi()
-        // fs.unlinkSync(locaFilePath)
+        // fs.unlinkSync(localFilePath)
         // return result
     } catch (error) {
-        fs.unlinkSync(locaFilePath)
+        fs.unlinkSync(localFilePath)
         console.log(error)
     }
 }

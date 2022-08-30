@@ -14,7 +14,6 @@ interface OrderAttrs {
     status: OrderStatus
     ship_info?: any
     payment_status?: boolean
-
     ship_payment: number
     merchandise_payment: number
     total_payment: number
@@ -38,6 +37,7 @@ interface OrderDoc extends Document {
     ship_payment: number
     merchandise_payment: number
     total_payment: number
+    isRated: boolean
 }
 
 interface OrderModel extends Model<OrderDoc> {
@@ -65,6 +65,7 @@ const orderSchema = new Schema({
     ship_payment: Number,
     merchandise_payment: Number,
     total_payment: Number,
+    isRated: { type: Boolean, default: false },
 })
 
 orderSchema.set('versionKey', 'version')

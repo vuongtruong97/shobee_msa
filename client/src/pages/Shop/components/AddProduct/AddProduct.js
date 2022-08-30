@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styles from './AddProduct.module.scss'
 
+import { useSelector } from 'react-redux'
 import categoryApi from 'services/category-api/category-api'
 import productAPI from 'services/product-api/product-api'
 import useSessionStorage from 'hooks/useSessionStorage'
@@ -76,6 +77,7 @@ const schema = yup
     .required()
 
 function AddProduct() {
+    const userInfo = useSelector((state) => state.user.info)
     const navigate = useNavigate()
     const [listCate, setListCate] = useSessionStorage('list_cate', [])
     const {
@@ -148,6 +150,7 @@ function AddProduct() {
     }
     const onSubmit = async (data) => {
         data.list = listImage
+        data.shop = userInfo.shop
         delete data.images
         console.log(data)
         const fd = appendFormData(data)
@@ -220,7 +223,7 @@ function AddProduct() {
                             label='Danh mục'
                             {...register('category')}
                             listOption={listCate}
-                            valueField='_id'
+                            valueField='id'
                             valueName='display_name'
                             error={errors.category?.message}
                         />

@@ -14,7 +14,8 @@ function ProductDetail({ product }) {
                         </div>
                         <div className='col col-7 md-6 lg-10'>
                             <div className={styles.detailDes}>
-                                {product?.category?.display_name}
+                                {/* {product?.category?.display_name} */}
+                                Thiết bị điện tử
                             </div>
                         </div>
                     </div>
@@ -23,9 +24,7 @@ function ProductDetail({ product }) {
                             <span className={styles.detailName}>Thương hiệu</span>
                         </div>
                         <div className='col col-7 md-6 lg-10'>
-                            <div className={styles.detailDes}>
-                                Đang phát triển...😖🙁🙁
-                            </div>
+                            <div className={styles.detailDes}>Shobee</div>
                         </div>
                     </div>
                     <div className='row'>
@@ -42,7 +41,7 @@ function ProductDetail({ product }) {
                         </div>
                         <div className='col col-7 md-6 lg-10'>
                             <div className={styles.detailDes}>
-                                {product?.shop?.shop_contacts?.address[0].province}
+                                {product?.shop?.shop_contacts?.address?.detail}
                             </div>
                         </div>
                     </div>

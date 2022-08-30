@@ -28,7 +28,7 @@ function BannerSlider({ sliders, ...props }) {
     return (
         <Slider settings={settings}>
             {sliders.map((item) => {
-                return <BannerSliderItem key={item.id} image_url={item.img_url} />
+                return <BannerSliderItem key={item._id} image_url={item.image_url} />
             })}
         </Slider>
     )

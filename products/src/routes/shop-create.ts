@@ -25,7 +25,9 @@ router.post(
                 category,
             } = req.body
 
-            const userHasShop = await Shop.findOne({ owner: user!.id })
+            const userHasShop = await Shop.findOne({ shop_owner: user!.id })
+
+            console.log(userHasShop)
 
             if (userHasShop) {
                 throw new BadRequestError('Mỗi tài khoản chỉ có thể tạo 1 cửa hàng')

@@ -1,0 +1,139 @@
+.reviewWrap {
+    width: 100%;
+    font-size: 1.4rem;
+    .title {
+        font-size: 2rem;
+        font-weight: 400;
+        text-transform: uppercase;
+        width: 100%;
+        padding: 1.4rem;
+    }
+    .reviewFilter {
+        background-color: #fffbf8;
+        border: 1px solid #f9ede5;
+        margin-bottom: 1.6rem;
+        display: flex;
+        align-items: center;
+        border-radius: 2px px;
+        box-sizing: border-box;
+        padding: 3rem;
+        display: flex;
+        .briefing {
+            display: flex;
+            flex-direction: column;
+            margin-right: 3rem;
+            .scoreWrap {
+                color: var(--primary);
+                .score {
+                    color: var(--primary);
+                    font-size: 3rem;
+                }
+                .maxScore {
+                    color: var(--primary);
+                    font-size: 1.8;
+                    font-weight: 500;
+                }
+            }
+        }
+        .filter {
+            flex: 1;
+            margin-left: 1.5rem;
+            .filterBtn {
+                cursor: pointer;
+                user-select: none;
+                display: inline-block;
+                height: 3.2rem;
+                line-height: 3.2rem;
+                text-align: center;
+                min-width: 10rem;
+                border: 1px solid rgba(0, 0, 0, 0.09);
+                margin: 0.5rem 0.8rem 0.5rem 0;
+                background-color: #fff;
+                padding: 0 1rem;
+                &.active {
+                    border-color: var(--primary);
+                    color: var(--primary);
+                }
+            }
+        }
+    }
+    .reviewList {
+        .commentList {
+            flex-direction: column;
+            & > * {
+                padding: 0 0 1.6rem 2rem;
+            }
+            .comment {
+                .avatar {
+                    margin-right: 0.5rem;
+                    & > img {
+                        width: 5rem;
+                    }
+                }
+                .content {
+                    display: flex;
+                    flex-direction: column;
+                    & > * {
+                        margin-bottom: 1rem;
+                    }
+                    .authorName {
+                        font-size: 1.3rem;
+                    }
+                    .ratingStar {
+                        font-size: 1.3rem;
+                    }
+                    .ratingTime {
+                        font-size: 1.3rem;
+                        color: var(--text-tertiary-o);
+                    }
+                    .ratingImages {
+                        display: flex;
+                        & > img {
+                            width: 7.2rem;
+                            margin-left: 0.5rem;
+                        }
+                    }
+                    .ratingActions {
+                        color: var(--text-tertiary-o);
+                        cursor: pointer;
+                        & > svg {
+                            transform: scale(1.2);
+                        }
+                    }
+                }
+                display: flex;
+            }
+        }
+    }
+    .pageControl {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-right: 2rem;
+        margin-top: 2rem;
+        .btn {
+            cursor: pointer;
+            width: 2.6rem;
+            height: 2.6rem;
+            border: 1px solid #eaeaea;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 1.5rem;
+            & > svg {
+                font-size: 1.8rem;
+            }
+            &.active {
+                background-color: var(--primary);
+                color: #fff;
+                border-radius: 0.2rem;
+            }
+            &.no-outline {
+                border-color: transparent;
+                &:hover {
+                    color: var(--primary);
+                }
+            }
+        }
+    }
+}

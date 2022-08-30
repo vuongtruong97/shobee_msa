@@ -7,17 +7,17 @@ import SortBar from './SortBar'
 
 import SmallSpinner from 'common-components/UI/LoadingSpinner/SmallSpinner'
 
-function ListProducts({ listProducts, onFilter, onLoad, ...props }) {
+function ListProducts({ listProducts, onFilter, onLoad, sortBar, ...props }) {
     return (
         <div className={styles.ListProducts}>
             {onLoad && <SmallSpinner />}
 
             {!onLoad && (
                 <>
-                    <SortBar onFilter={onFilter} />
+                    {sortBar && <SortBar onFilter={onFilter} />}
                     <div className='row'>
                         {listProducts.map((prod) => (
-                            <ProductItem key={prod._id} data={prod} />
+                            <ProductItem key={prod.id} data={prod} />
                         ))}
                     </div>
                 </>

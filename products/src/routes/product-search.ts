@@ -79,11 +79,8 @@ router.get(
                 sort[sortBy] = order
             }
 
-            // console.log(filter)
-            // console.log(sort)
-
             const products = await Product.find(filter, projection)
-                .select('name price rating image_urls')
+                .select('name price rating sold image_urls quantity')
                 .skip(skip)
                 .sort(sort)
                 .limit(+limit)

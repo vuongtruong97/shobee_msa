@@ -1,6 +1,7 @@
 import React, { Suspense, useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { ROLES } from 'constants/roles.constants'
 import userAPI from 'services/user-api/user-api'
 import cartAPI from 'services/cart-api/cart-api'
 import { userActions } from 'store/userSlice/userSlice'
@@ -55,17 +56,16 @@ function App() {
 
     const dispatch = useDispatch()
     //check user login and set user infor to redux
-    useEffect(() => {
-        if (isLoggedIn) {
-            userAPI
-                .getUserInfo()
-                .then((res) => dispatch(userActions.setUserInfo(res.data.data)))
 
-            cartAPI
-                .getCartList()
-                .then((res) => dispatch(userActions.setCartInfo(res.data)))
-        }
-    }, [isLoggedIn, dispatch])
+    if (isLoggedIn) {
+        userAPI
+            .getUserInfo()
+            .then((res) => dispatch(userActions.setUserInfo(res.data.data)))
+
+        cartAPI
+            .getCartList({ limit: 5 })
+            .then((res) => dispatch(userActions.setCartInfo(res.data.data)))
+    }
 
     return (
         <>
@@ -86,11 +86,23 @@ function App() {
                             <Route path='shop/register' element={<RegisterShop />} />
                         </Route>
 
-                        <Route element={<RequireAuth />}>
+                        <Route
+                            element={
+                                <RequireAuth
+                                    allowRoles={[ROLES.SELLER, ROLES.USER, ROLES.ADMIN]}
+                                />
+                            }
+                        >
                             <Route path='cart' element={<Cart />} />
                         </Route>
 
-                        <Route element={<RequireAuth />}>
+                        <Route
+                            element={
+                                <RequireAuth
+                                    allowRoles={[ROLES.SELLER, ROLES.USER, ROLES.ADMIN]}
+                                />
+                            }
+                        >
                             <Route path='user' element={<User />}>
                                 <Route path='profile' element={<Profile />} />
                                 <Route path='address' element={<Address />} />

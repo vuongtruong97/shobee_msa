@@ -8,20 +8,38 @@ import cartAPI from 'services/cart-api/cart-api'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import ordersAPI from 'services/orders-api/orders-api'
+import Modal from 'common-components/UI/Modal/Modal'
+import NeuButton from 'common-components/UI/Button/NeuButton'
 
 function Cart() {
     const [cart, setCart] = useState([])
     const [orders, setOrders] = useState([])
     const [aggregate, setAgregate] = useState({})
-
     const [listOrder, setListOrder] = useState([])
+    const [showModal, setShowModal] = useState(false)
+    const [deleteInfo, setDeleteInfo] = useState([])
 
     const fetchCartData = async () => {
         try {
-            const res = await cartAPI.getCart()
+            const res = await cartAPI.getCartDetail()
 
-            if (res.data.data.shop_order_ids) {
-                setCart(res.data.data.shop_order_ids)
+            if (res.data.success) {
+                let cartGroupByShopId = []
+                res.data.data.products.forEach((prod) => {
+                    const index = cartGroupByShopId.findIndex(
+                        (shop) => shop.shop._id === prod.shop_id._id
+                    )
+                    if (index !== -1) {
+                        cartGroupByShopId[index].products.push(prod)
+                    } else {
+                        cartGroupByShopId.push({
+                            shop: prod.shop_id,
+                            products: [prod],
+                        })
+                    }
+                })
+
+                setCart(cartGroupByShopId)
             }
         } catch (error) {
             console.log(error)
@@ -38,47 +56,71 @@ function Cart() {
     }, [])
 
     // modified cart and re-fetch cart data
-    const modifiedQuantity = async (modified, e, prevQuantity) => {
+    const modifiedQuantity = async (modified, prevQuantity, e) => {
+        if (modified.quantity === 0) {
+            return
+        }
+        if (modified.quantity + prevQuantity === 0) {
+            setDeleteInfo([modified, prevQuantity, e])
+            return setShowModal(true)
+        }
         try {
             const res = await cartAPI.modified(modified)
+            console.log(res)
             if (res.data.success) {
                 fetchCartData()
             }
         } catch (error) {
-            e.target.value = prevQuantity
+            if (e) {
+                e.target.value = prevQuantity
+            }
+            toast.error(error.message)
+        }
+    }
+
+    const confirmDelete = async (modified, prevQuantity, e) => {
+        try {
+            const res = await cartAPI.modified(modified)
+            console.log(res)
+            if (res.data.success) {
+                fetchCartData()
+                setShowModal(false)
+                setDeleteInfo([])
+            }
+        } catch (error) {
+            if (e) {
+                e.target.value = prevQuantity
+            }
             toast.error(error.message)
         }
     }
 
     // check shop select all
     const handleCheckBoxAllShop = (shopId) => {
-        const shopInCart = cart.find((shop) => shop.shop_id._id === shopId)
+        const shopInCart = cart.find((shop) => shop.shop._id === shopId)
         const shopOrderIndex = orders.findIndex((shop) => shop.shopId === shopId)
 
         const listProd = cart
-            .find((shop) => shop.shop_id._id === shopId)
-            .product_briefs.map((prod) => prod.product_id._id)
+            .find((shop) => shop.shop._id === shopId)
+            .products.map((prod) => prod.id._id)
 
         const every = listProd.every((prod) => listOrder.includes(prod))
 
         if (every) {
             const newListOrder = listOrder.filter((prod) => !listProd.includes(prod))
-            console.log(newListOrder)
 
             setListOrder(newListOrder)
-            console.log('disable button')
         } else {
             const newListOrder = new Set(listOrder.concat(listProd))
 
             setListOrder(Array.from(newListOrder))
-            console.log('enable button')
         }
 
         // create list order from cart
-        const listOrdeR = shopInCart.product_briefs.map((prod) => {
+        const listOrdeR = shopInCart.products.map((prod) => {
             return {
-                prodId: prod.product_id._id,
-                price: prod.product_id.price,
+                prodId: prod.id._id,
+                price: prod.id.price,
                 quantity: prod.quantity,
             }
         })
@@ -92,13 +134,13 @@ function Cart() {
             return setOrders([...orders])
         }
         // if exist shop replace with full shop order
-        if (shopInCart.product_briefs.length > orders[shopOrderIndex].orders.length) {
+        if (shopInCart.products.length > orders[shopOrderIndex].orders.length) {
             orders.splice(shopOrderIndex, 1)
             orders[shopOrderIndex] = shopOrder
             return setOrders([...orders])
         }
         // if full shop order ==> remove out of orders
-        if (shopInCart.product_briefs.length === orders[shopOrderIndex].orders.length) {
+        if (shopInCart.products.length === orders[shopOrderIndex].orders.length) {
             orders.splice(shopOrderIndex, 1)
             return setOrders([...orders])
         }
@@ -156,12 +198,13 @@ function Cart() {
     }
 
     const handleCheckedCheckAllShop = (shopId) => {
-        const shopInCart = cart.find((shop) => shop.shop_id._id === shopId)
+        const shopInCart = cart.find((shop) => shop.shop._id === shopId)
+
         const shopInOrders = orders.find((shop) => shop.shopId === shopId)
 
         if (!shopInOrders) return false
 
-        if (shopInCart.product_briefs.length === shopInOrders.orders.length) {
+        if (shopInCart.products.length === shopInOrders.orders.length) {
             return true
         }
     }
@@ -169,10 +212,10 @@ function Cart() {
     useEffect(() => {
         const aggregate = cart.reduce(
             (acc, shop) => {
-                acc.total += shop.product_briefs.reduce((acc2, prod) => {
-                    if (listOrder.includes(prod.product_id._id)) {
+                acc.total += shop.products.reduce((acc2, prod) => {
+                    if (listOrder.includes(prod.id._id)) {
                         acc.quantity += 1
-                        return (acc2 += prod.product_id.price * prod.quantity)
+                        return (acc2 += prod.id.price * prod.quantity)
                     }
                     return acc2
                 }, 0)
@@ -201,47 +244,42 @@ function Cart() {
         <div className='container' style={{ position: 'relative' }}>
             <div className={styles.cart}>
                 <div className={styles.shop_list}>
-                    {cart.map((shop, i) => (
-                        <div key={shop.shop_id._id} className={styles.shop}>
+                    {cart.map((shop) => (
+                        <div key={shop.shop._id} className={styles.shop}>
                             <div className={styles.head}>
                                 <div className={styles.checkbox}>
                                     <Checkbox
-                                        checked={handleCheckedCheckAllShop(
-                                            shop.shop_id._id
-                                        )}
+                                        checked={handleCheckedCheckAllShop(shop.shop._id)}
                                         onChange={() => {
-                                            handleCheckBoxAllShop(shop.shop_id._id)
+                                            handleCheckBoxAllShop(shop.shop._id)
                                         }}
                                     />
                                 </div>
                                 <div className={styles.shop_name}>
                                     <AiFillShop /> &nbsp;
-                                    <Link to='#'>{shop.shop_id.shop_name}</Link>
+                                    <Link to='#'>{shop.shop.shop_name}</Link>
                                 </div>
                                 <button className={styles.chat_btn}>
                                     <AiFillWechat />
                                 </button>
                             </div>
                             <div className={styles.list_prod}>
-                                {shop.product_briefs.map((prod) => (
-                                    <div
-                                        key={prod.product_id._id}
-                                        className={styles.prod}
-                                    >
+                                {shop.products.map((prod) => (
+                                    <div key={prod.id._id} className={styles.prod}>
                                         <div className={styles.checkbox}>
                                             <Checkbox
                                                 checked={handleCheckedCheckBox(
-                                                    shop.shop_id._id,
-                                                    prod.product_id._id
+                                                    shop.shop._id,
+                                                    prod.id._id
                                                 )}
-                                                id={prod.product_id._id}
+                                                id={prod.id._id}
                                                 onChange={() => {
                                                     handleCheckBoxProd({
-                                                        shopId: shop.shop_id._id,
+                                                        shopId: shop.shop._id,
                                                         prodInfo: {
-                                                            prodId: prod.product_id._id,
+                                                            prodId: prod.id._id,
                                                             quantity: prod.quantity,
-                                                            price: prod.product_id.price,
+                                                            price: prod.id.price,
                                                         },
                                                     })
                                                 }}
@@ -253,30 +291,32 @@ function Cart() {
                                                     className={styles.prod_img}
                                                     style={{
                                                         backgroundImage: `url(${
-                                                            prod.product_id.image_urls &&
-                                                            prod.product_id.image_urls[0]
+                                                            prod.id.image_urls &&
+                                                            prod.id.image_urls[0]
                                                         })`,
                                                     }}
                                                 ></div>
                                             </Link>
                                             <div className={styles.prod_name}>
-                                                <Link to='#'>{prod.product_id.name}</Link>
+                                                <Link to='#'>{prod.id.name}</Link>
                                             </div>
                                         </div>
                                         <div className={styles.price}>
-                                            {numberWithCommas(prod.product_id.price)}
+                                            {numberWithCommas(prod.id.price)}
                                             &nbsp;₫
                                         </div>
                                         <div className={styles.quantity}>
                                             <div className={styles.input_quantity}>
                                                 <button
                                                     onClick={() => {
-                                                        modifiedQuantity({
-                                                            shop_id: shop.shop_id._id,
-                                                            product_id:
-                                                                prod.product_id._id,
-                                                            quantity: -1,
-                                                        })
+                                                        modifiedQuantity(
+                                                            {
+                                                                shop_id: shop.shop._id,
+                                                                product_id: prod.id._id,
+                                                                quantity: -1,
+                                                            },
+                                                            prod.quantity
+                                                        )
                                                     }}
                                                     className={styles.quantity_btn}
                                                 >
@@ -291,26 +331,27 @@ function Cart() {
                                                     onBlur={(e) => {
                                                         modifiedQuantity(
                                                             {
-                                                                shop_id: shop.shop_id._id,
-                                                                product_id:
-                                                                    prod.product_id._id,
+                                                                shop_id: shop.shop._id,
+                                                                product_id: prod.id._id,
                                                                 quantity:
                                                                     e.target.value -
                                                                     prod.quantity,
                                                             },
-                                                            e,
-                                                            prod.quantity
+                                                            prod.quantity,
+                                                            e
                                                         )
                                                     }}
                                                 />
                                                 <button
                                                     onClick={() => {
-                                                        modifiedQuantity({
-                                                            shop_id: shop.shop_id._id,
-                                                            product_id:
-                                                                prod.product_id._id,
-                                                            quantity: 1,
-                                                        })
+                                                        modifiedQuantity(
+                                                            {
+                                                                shop_id: shop.shop._id,
+                                                                product_id: prod.id._id,
+                                                                quantity: 1,
+                                                            },
+                                                            prod.quantity
+                                                        )
                                                     }}
                                                     className={styles.quantity_btn}
                                                 >
@@ -321,18 +362,21 @@ function Cart() {
                                         <div className={styles.total_price}>
                                             <b>
                                                 {numberWithCommas(
-                                                    prod.product_id.price * prod.quantity
+                                                    prod.id.price * prod.quantity
                                                 )}
                                                 &nbsp;₫
                                             </b>
                                         </div>
                                         <div
                                             onClick={() => {
-                                                modifiedQuantity({
-                                                    shop_id: shop.shop_id._id,
-                                                    product_id: prod.product_id._id,
-                                                    quantity: -prod.quantity,
-                                                })
+                                                modifiedQuantity(
+                                                    {
+                                                        shop_id: shop.shop._id,
+                                                        product_id: prod.id._id,
+                                                        quantity: -prod.quantity,
+                                                    },
+                                                    prod.quantity
+                                                )
                                             }}
                                             className={styles.delete}
                                         >
@@ -368,6 +412,35 @@ function Cart() {
                     Đặt hàng
                 </button>
             </div>
+            {showModal && (
+                <Modal
+                    onClose={() => {
+                        setShowModal(false)
+                    }}
+                    title={'Xoá sản phẩm khỏi giỏ hàng'}
+                >
+                    <div className={styles.confirmBtnModal}>
+                        <NeuButton
+                            onClick={() => {
+                                confirmDelete(...deleteInfo)
+                            }}
+                            rounded
+                            primary
+                        >
+                            Xác nhận
+                        </NeuButton>
+                        <NeuButton
+                            primary
+                            rounded
+                            onClick={() => {
+                                setShowModal(false)
+                            }}
+                        >
+                            Huỷ Bỏ
+                        </NeuButton>
+                    </div>
+                </Modal>
+            )}
         </div>
     )
 }

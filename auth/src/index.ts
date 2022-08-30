@@ -1,3 +1,4 @@
+import dotenv from 'dotenv'
 import * as http from 'http'
 import mongoose from 'mongoose'
 import { app } from './app'
@@ -8,6 +9,11 @@ import { ShopCreateConsummer } from './events/consumers/shop-create-consumer'
 let server: http.Server
 
 const start = async () => {
+    let PORT = 3000
+    if (process.env.NODE_EVN === 'test') {
+        PORT = 3003
+        dotenv.config()
+    }
     if (!process.env.JWT_KEY) {
         throw new Error('JWT_KEY is not define')
     }
@@ -29,8 +35,8 @@ const start = async () => {
         await connectRedis()
 
         console.log('Connected to auth mongodb 😁')
-        server = app.listen(3000, () => {
-            console.log('Auth service run on port 3000 😎')
+        server = app.listen(PORT, () => {
+            console.log('Auth service run on port 3000 😎', PORT)
         })
     } catch (error: any) {
         console.log(error.message)

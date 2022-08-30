@@ -1,0 +1,57 @@
+.productFilter {
+    padding: 0.5rem;
+    font-size: 1.6rem;
+    & > * {
+        border-bottom: 1px solid #d3d3d3;
+        padding: 2rem 0;
+    }
+    .title {
+        display: flex;
+        align-items: center;
+        font-size: 1.7rem;
+        text-transform: uppercase;
+        padding: 0.5rem;
+        & > svg {
+            margin-bottom: 0.2rem;
+        }
+    }
+
+    .filterDivision {
+        display: flex;
+        flex-direction: column;
+        & > button {
+            height: 3rem;
+            border-radius: 0 !important;
+        }
+        .subTitle {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .filterPrice {
+            display: flex;
+            margin-bottom: 2rem;
+            justify-content: space-between;
+            & > input {
+                width: 40%;
+                border: 1px solid #ccc;
+                height: 3rem;
+                padding-left: 0.5rem;
+                &::-webkit-outer-spin-button,
+                &::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+            }
+        }
+
+        .filterStatus {
+            display: flex;
+            flex-direction: column;
+        }
+        .filterStar {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}

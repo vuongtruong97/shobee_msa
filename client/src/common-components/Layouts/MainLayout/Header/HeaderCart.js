@@ -4,30 +4,28 @@ import { Link } from 'react-router-dom'
 
 import numberWithCommas from 'utils/numberWithCommas'
 
-function HeaderCart({ data }) {
-    console.log('re-render')
+function HeaderCart({ data, total }) {
     return (
         <div className={styles.cart}>
-            <div className={styles.cart_title}>Giỏ hàng của bạn</div>
+            <div className={styles.cart_title}>Sản phẩm mới thêm</div>
             {data &&
                 data.map((prod) => (
                     <Link
-                        to={`/product/${prod.product_id._id}`}
-                        key={prod.product_id._id}
+                        to={`/product/${prod.id._id}`}
+                        key={prod.id._id}
                         className={styles.product}
                     >
                         <div
                             className={styles.image}
                             style={{
                                 backgroundImage: `url(${
-                                    prod.product_id.image_urls &&
-                                    prod.product_id.image_urls[0]
+                                    prod.id.image_urls && prod.id.image_urls[0]
                                 })`,
                             }}
                         ></div>
-                        <div className={styles.name}>{prod.product_id.name}</div>
+                        <div className={styles.name}>{prod.id.name}</div>
                         <div className={styles.price}>
-                            {numberWithCommas(prod.product_id.price)}&nbsp;<i>₫</i>
+                            {numberWithCommas(prod.id.price)}&nbsp;<i>₫</i>
                         </div>
                     </Link>
                 ))}
@@ -41,6 +39,9 @@ function HeaderCart({ data }) {
             )}
             <div className={styles.cart_footer}>
                 <Link to='/cart'>Xem giỏ hàng</Link>
+                <span>
+                    Tất cả: <b>{total}</b> sản phẩm
+                </span>
             </div>
         </div>
     )

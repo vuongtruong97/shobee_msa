@@ -2,9 +2,9 @@ import React from 'react'
 import styles from './CategorySliderItem.module.scss'
 import { Link } from 'react-router-dom'
 
-function CategorySliderItem({ slug, image_url, ...props }) {
+function CategorySliderItem({ slug, image_url, id, ...props }) {
     return (
-        <Link to={`/category/${slug}`}>
+        <Link state={{ category: id }} to={`/category/${slug}`}>
             <div className={styles['category']}>
                 <div
                     {...props}

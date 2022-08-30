@@ -1,3 +1,4 @@
+import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import { connectRedis } from '@vuongtruongnb/common'
 import { rabbitWrapper } from './rabbitmq-wrapper'
@@ -5,6 +6,12 @@ import { app } from './app'
 import { ProductCreatedConsumer } from './events/consumers/product-created-comsumer'
 
 const start = async () => {
+    let PORT = 3000
+    if (process.env.NODE_EVN === 'test') {
+        PORT = 3000
+        dotenv.config()
+    }
+
     if (!process.env.JWT_KEY) {
         throw new Error('JWT_KEY is not define')
     }
@@ -26,8 +33,8 @@ const start = async () => {
         await new ProductCreatedConsumer(rabbitWrapper.consumerConnection).listen()
 
         console.log('Connected to orders mongodb 😁')
-        app.listen(3000, () => {
-            console.log('orders service run on port 3000 😎')
+        app.listen(PORT, () => {
+            console.log('orders service run on port 3000 😎', PORT)
         })
     } catch (error: any) {
         console.log(error.message)

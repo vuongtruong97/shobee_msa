@@ -7,13 +7,13 @@ import styles from './Modal.module.scss'
 const BackDrop = () => {
     return <div className={styles.backdrop}></div>
 }
-const OverLay = ({ children, onClose, ...props }) => {
+const OverLay = ({ children, onClose, title, ...props }) => {
     return (
         <div {...props} className={styles.modal}>
             <div onClick={onClose} className={styles.closeBtn}>
                 <FaTimes />
             </div>
-            <div className={styles.title}>Thêm mới sản phẩm</div>
+            <div className={styles.title}>{title}</div>
             <div className={styles.body}>{children}</div>
         </div>
     )

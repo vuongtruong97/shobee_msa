@@ -19,6 +19,7 @@
                 border-bottom: 1px solid rgba(0, 0, 0, 0.09);
                 padding: 0 20px;
                 .shop_name {
+                    user-select: none;
                     font-size: 1.6rem;
                     text-decoration: none;
                     font-weight: 500;
@@ -190,7 +191,7 @@
     align-items: center;
 }
 .checkout {
-    z-index: 9990;
+    z-index: 990;
     position: -webkit-sticky;
     position: sticky;
     bottom: 0;
@@ -227,5 +228,14 @@
             opacity: 0.8;
             cursor: not-allowed;
         }
+    }
+}
+.confirmBtnModal {
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5rem;
+    & > button {
+        margin-right: 2rem;
     }
 }

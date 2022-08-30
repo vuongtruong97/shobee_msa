@@ -42,6 +42,7 @@ interface ShopDoc extends Document {
     rating?: object
     status?: string
     image_url?: string
+    total: number
 }
 
 interface ShopModel extends Model<ShopDoc> {
@@ -69,6 +70,7 @@ const shopSchema = new Schema(
         rating: Schema.Types.ObjectId,
         status: String,
         image_url: String,
+        total: { Number, default: 0 },
     },
     { timestamps: true }
 )

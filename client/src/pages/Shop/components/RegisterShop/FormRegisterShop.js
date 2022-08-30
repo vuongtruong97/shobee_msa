@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { userActions } from 'store/userSlice/userSlice'
+import { ROLES } from 'constants/roles.constants'
 
 import styles from './FormRegisterShop.module.scss'
 
@@ -19,12 +22,14 @@ import 'react-toastify/dist/ReactToastify.css'
 import giaoHangNhanhAPI from 'services/giao-hang-nhanh-api/ghn-api'
 
 function FormRegisterShop() {
+    const userInfo = useSelector((state) => state.user.info)
     const [isLoading, setIsLoading] = useState(false)
     const [listProvince, setListProvince] = useState([])
     const [listDistrict, setListDistrict] = useState([])
     const [listWard, setListWard] = useState([])
     const [listCate, setListCate] = useSessionStorage('list_cate', [])
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const {
         register,
@@ -118,7 +123,8 @@ function FormRegisterShop() {
 
             if (result.data.success) {
                 toast.success(result.data.message)
-                navigate('/shop-manage', { replace: true })
+                // dispatch(userActions.setUserInfo({ ...userInfo, role: ROLES.SELLER }))
+                navigate('/', { replace: true })
             }
         } catch (error) {
             toast.error(error.message)
@@ -192,7 +198,7 @@ function FormRegisterShop() {
             <Select
                 {...register('category')}
                 valueName='display_name'
-                valueField='_id'
+                valueField='id'
                 label='Ngành hàng'
                 listOption={listCate}
             />

@@ -1,7 +1,14 @@
+import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import { app } from './app'
 
 const start = async () => {
+    let PORT = 3000
+    if (process.env.NODE_EVN === 'test') {
+        PORT = 3002
+        dotenv.config()
+    }
+
     if (!process.env.JWT_KEY) {
         throw new Error('JWT_KEY is not define')
     }
@@ -17,8 +24,8 @@ const start = async () => {
         await mongoose.connect(`${process.env.MONGO_URI}/catalog`)
 
         console.log('Connected to catalog mongodb 😁')
-        app.listen(3000, () => {
-            console.log('Catalogs service run on port 3000 😎')
+        app.listen(PORT, () => {
+            console.log(`Catalogs service run on port ${PORT} 😎`)
         })
     } catch (error) {
         console.log(error)

@@ -23,6 +23,8 @@ import {
     PinterestShareButton,
     PinterestIcon,
 } from 'react-share'
+import { FaRegHeart } from 'react-icons/fa'
+import { AiOutlineFileProtect, AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai'
 
 function ProductInfo({ product }) {
     let [quantity, setQuantity] = useState(0)
@@ -32,7 +34,7 @@ function ProductInfo({ product }) {
         if (quantity >= product.quantity) {
             return
         }
-        setQuantity((prev) => prev + 1)
+        setQuantity((prev) => +prev + 1)
     }
     const handleDcrQuantity = () => {
         if (quantity <= 0) {
@@ -48,14 +50,17 @@ function ProductInfo({ product }) {
         try {
             if (quantity > 0) {
                 const res = await cartAPI.modified({
-                    product_id: product._id,
+                    product_id: product.id,
                     shop_id: product.shop._id,
                     quantity: quantity,
                 })
                 console.log(res)
-                toast.success(res.data.message)
-                const newCart = await cartAPI.getCartList()
-                dispatch(userActions.setCartInfo(newCart.data))
+                if (res.data.success) {
+                    toast.success(res.data.message)
+                    const newCart = await cartAPI.getCartList()
+                    console.log(newCart)
+                    dispatch(userActions.setCartInfo(newCart.data.data))
+                }
             }
         } catch (error) {
             console.log(error)
@@ -67,29 +72,36 @@ function ProductInfo({ product }) {
             <div className='col col-12 sm-6 md-5 lg-4 xl-4'>
                 <div className={styles.show}>
                     <ProductSlider image_urls={product.image_urls} />
-                    <div className={styles.share}>
-                        <FacebookShareButton
-                            url={window.location.href}
-                            quote='vuong dep trai'
-                            hashtag='shobee'
-                        >
-                            <FacebookIcon size={32} round={true} />
-                        </FacebookShareButton>
-                        <PinterestShareButton
-                            url={window.location.href}
-                            media={product.image_urls && product.image_urls[0]}
-                        >
-                            <PinterestIcon size={32} round={true} />
-                        </PinterestShareButton>
-                        <FacebookMessengerShareButton
-                            appId='310952877774062'
-                            url={window.location.href}
-                        >
-                            <FacebookMessengerIcon size={32} round={true} />
-                        </FacebookMessengerShareButton>
-                        <TwitterShareButton url={window.location.href}>
-                            <TwitterIcon size={32} round={true} />
-                        </TwitterShareButton>
+                    <div className={styles.subShow}>
+                        <div className={styles.share}>
+                            <span>Chia sẻ:</span>
+                            <FacebookShareButton
+                                url={window.location.href}
+                                quote='vuong dep trai'
+                                hashtag='shobee'
+                            >
+                                <FacebookIcon size={28} round={true} />
+                            </FacebookShareButton>
+                            <PinterestShareButton
+                                url={window.location.href}
+                                media={product.image_urls && product.image_urls[0]}
+                            >
+                                <PinterestIcon size={28} round={true} />
+                            </PinterestShareButton>
+                            <FacebookMessengerShareButton
+                                appId='310952877774062'
+                                url={window.location.href}
+                            >
+                                <FacebookMessengerIcon size={28} round={true} />
+                            </FacebookMessengerShareButton>
+                            <TwitterShareButton url={window.location.href}>
+                                <TwitterIcon size={28} round={true} />
+                            </TwitterShareButton>
+                        </div>
+                        <div className={styles.wishList}>
+                            <FaRegHeart />
+                            Đã thích (26)
+                        </div>
                     </div>
                 </div>
             </div>
@@ -128,8 +140,7 @@ function ProductInfo({ product }) {
                             <span style={{ color: 'var(--primary)' }}>
                                 ₫
                                 {numberWithCommas(
-                                    (product.price / 100) *
-                                        Math.floor(Math.random() * 100)
+                                    (product.price / 100) * (100 - ~product.discount)
                                 )}
                             </span>
                         )}
@@ -144,7 +155,11 @@ function ProductInfo({ product }) {
                         <div className={styles.option}>
                             <span className={styles.optionTitle}>
                                 <span className={styles.title_name}>Mã giảm giá</span>
-                                <span className={styles.title_detail}> Không có</span>
+                                <span className={styles.title_detail}>
+                                    <div className={styles.discountTicket}>5% Giảm</div>
+                                    <div className={styles.discountTicket}>10% Giảm</div>
+                                    <div className={styles.discountTicket}>15% Giảm</div>
+                                </span>
                             </span>
                         </div>
                         <div className={styles.option}>
@@ -152,12 +167,12 @@ function ProductInfo({ product }) {
                                 <span className={styles.title_name}> Số lượng</span>
                                 <span className={styles.title_detail}>
                                     <div className={styles.quantityCrtl}>
-                                        <button
+                                        <div
                                             className={styles.quantityCtrlBtn}
                                             onClick={handleDcrQuantity}
                                         >
-                                            -
-                                        </button>
+                                            <AiOutlineMinus />
+                                        </div>
                                         <input
                                             className={styles.quantityInput}
                                             value={quantity}
@@ -165,12 +180,12 @@ function ProductInfo({ product }) {
                                             max={product.quantity}
                                             onChange={handleSetQuantity}
                                         />
-                                        <button
+                                        <div
                                             className={styles.quantityCtrlBtn}
                                             onClick={handleIncrQuantity}
                                         >
-                                            +
-                                        </button>
+                                            <AiOutlinePlus />
+                                        </div>
                                     </div>
                                 </span>
                             </span>
@@ -196,7 +211,13 @@ function ProductInfo({ product }) {
                             Thêm vào giỏ hàng
                         </Button>
                     </div>
-                    <div className={styles.policy}></div>
+                    <div className={styles.policy}>
+                        <span>
+                            <AiOutlineFileProtect />
+                            Shobee Đảm Bảo
+                        </span>
+                        <span>3 ngày Trả Hàng/Hoàn Tiền</span>
+                    </div>
                 </div>
             </div>
         </WrapStyle>

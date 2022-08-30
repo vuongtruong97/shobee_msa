@@ -1,6 +1,7 @@
 import Queue from 'bull'
 import { uploadToCloudinary } from '../utils/uploadImage'
 import { Product } from '../models/Product'
+import { Shop } from '../models/Shop'
 import { ProductCreatedPublisher } from '../events/publishers/product-created-publisher'
 import { rabbitWrapper } from '../rabbitmq-wrapper'
 
@@ -33,7 +34,7 @@ imageUploadQueue.process(async (job) => {
                             access_mode: 'public',
                             folder: 'products',
                             format: 'webp',
-                            transformation: { width: 250, height: 250 },
+                            transformation: { width: 450, height: 450, crop: 'fill' },
                         })
                     })
                 )
@@ -55,6 +56,8 @@ imageUploadQueue.process(async (job) => {
                     if (!product) {
                         throw new Error('Cập nhật sản phẩm thất bại')
                     }
+
+                    await Shop.findByIdAndUpdate(product.shop, { $inc: { total: 1 } })
 
                     await new ProductCreatedPublisher(
                         rabbitWrapper.channels.productCreatedChannel

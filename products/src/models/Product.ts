@@ -22,7 +22,7 @@ interface ProductAttrs {
     label_ids?: number[]
     invoice_option?: boolean
     rating?: {
-        rating_count: number[]
+        rating_count: [number, number, number, number, number]
         rating_star: number
     }
 }
@@ -48,7 +48,7 @@ interface ProductDoc extends Document {
     label_ids: number[]
     invoice_option?: boolean
     rating?: {
-        rating_count: number[]
+        rating_count: [number, number, number, number, number]
         rating_star: number
     }
     version: number
@@ -71,10 +71,10 @@ const productSchema = new Schema(
         video: { type: Object },
         currency: { type: String, default: 'VND' },
         discount: String,
-        shop: { type: Schema.Types.ObjectId, required: true },
+        shop: { type: Schema.Types.ObjectId, ref: 'Shop', required: true },
         brand: String,
         category: { type: Schema.Types.ObjectId, required: true },
-        sold: Number,
+        sold: { type: Number, default: 0 },
         liked_count: Number,
         specs: [{ type: Object }],
         label_ids: [{ type: Number }],

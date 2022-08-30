@@ -1,6 +1,6 @@
 import { NextFunction, Router, Request, Response } from 'express'
 import { Product } from '../models/Product'
-import { BadRequestError, isAuthenticated } from '@vuongtruongnb/common'
+import { BadRequestError, isAuthenticated, clearKey } from '@vuongtruongnb/common'
 import { diskUpload } from '../utils/uploadImage'
 import { imageUploadQueue, QueueModel } from '../queues/image-upload-queue'
 import { productCreateValidator } from '../validators/product-create-validator'
@@ -41,6 +41,8 @@ router.post(
             })
 
             await product.save()
+
+            await clearKey('products')
 
             imageUploadQueue.add({
                 id: product.id,

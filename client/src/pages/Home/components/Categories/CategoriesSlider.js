@@ -84,7 +84,8 @@ function CategoriesSlider() {
                     {sliders.map((item) => (
                         <CategorySliderItem
                             slug={item.slug}
-                            key={item._id}
+                            key={item.id}
+                            id={item.id}
                             name={item.display_name}
                             image_url={item.image_url}
                         />

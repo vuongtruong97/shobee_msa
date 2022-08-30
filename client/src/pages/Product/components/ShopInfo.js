@@ -15,6 +15,7 @@ function ShopInfo({ shopinfo }) {
     const handleSetCurrentChatId = (data) => {
         dispatch(chatActions.setCurrentChat(data))
     }
+
     return (
         <>
             {shopinfo && (
@@ -52,7 +53,7 @@ function ShopInfo({ shopinfo }) {
                                 <div>{shopinfo.shop_contacts.name}</div>
                                 <br></br>
                                 <div className={styles.contact_key}>Sản phẩm :</div>
-                                <div>200</div>
+                                <div>{shopinfo.total}</div>
                             </div>
                             <div className={styles.contact}>
                                 <div className={styles.contact_key}>Số điện thoại: </div>
@@ -69,7 +70,7 @@ function ShopInfo({ shopinfo }) {
                             </div>
                             <div className={styles.contact}>
                                 <div className={styles.contact_key}>Địa chỉ:</div>
-                                <div>{shopinfo.shop_contacts.address[0].province}</div>
+                                <div>{shopinfo?.shop_contacts?.address?.detail}</div>
                             </div>
                         </address>
                     </div>

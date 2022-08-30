@@ -4,13 +4,18 @@ import styles from './ManageProducts.module.scss'
 import SearchProduct from '../components/SearchProduct/SearchProduct'
 import ProductsTable from '../components/ProductsTable/ProductsTable'
 import shopAPI from 'services/shop-api/shop-api'
+import productAPI from 'services/product-api/product-api'
 import { Outlet } from 'react-router-dom'
 
 function ManageProducts() {
     const [shopProducts, setShopProducts] = useState([])
 
     const getListProd = async () => {
-        const res = await shopAPI.getMyShopProduct()
+        const res = await productAPI.getListProd({
+            limit: 30,
+            sortBy: 'createdAt',
+            order: -1,
+        })
         setShopProducts(res.data.data)
     }
 

@@ -9,7 +9,9 @@ router.get(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id } = req.params
-            const product = await Product.findById(id).cache({ time: 60 })
+            const product = await Product.findById(id)
+                .populate('shop')
+                .cache({ time: 60 })
 
             if (!product) {
                 throw new NotFoundError()

@@ -52,6 +52,31 @@
                         opacity: 0.8;
                     }
                 }
+                .searchResult {
+                    position: absolute;
+                    top: calc(100% + 0.3rem);
+                    left: 0;
+                    right: 0;
+                    background-color: #fff;
+                    border-radius: 0.3rem;
+                    box-shadow: 0 1px 4px 0 rgb(0 0 0 / 26%);
+                    .resultInfo {
+                        padding: 1rem 2rem 1rem 1.5rem;
+                        font-size: 1.4rem;
+                        color: #000;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        &:hover {
+                            background-color: #eee;
+                            cursor: pointer;
+                        }
+                    }
+                    .resultImage {
+                        border-radius: 999px;
+                        width: 40px;
+                    }
+                }
             }
         }
         .suggest {

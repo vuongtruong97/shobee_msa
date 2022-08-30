@@ -1,9 +1,33 @@
 .show {
     flex: 4;
-    .share {
-        padding: 1rem;
-        & > * {
-            margin-left: 0.5rem;
+    font-size: 1.4rem;
+    .subShow {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .share {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            & > span {
+                margin-bottom: 0.5rem;
+            }
+            & > * {
+                margin-left: 0.5rem;
+            }
+        }
+        .wishList {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            & > svg {
+                font-size: 2rem;
+                margin-right: 0.8rem;
+                color: var(--primary);
+            }
         }
     }
 }
@@ -20,7 +44,7 @@
     .title {
         font-size: 2.3rem;
         line-height: 3rem;
-        min-height: 6rem;
+        max-height: 6rem;
         word-wrap: break-word;
         white-space: normal;
         overflow: hidden;
@@ -73,25 +97,30 @@
                 }
             }
             .quantityCrtl {
-                border: 1px solid #ccc;
                 width: fit-content;
+                display: flex;
                 .quantityCtrlBtn {
-                    width: 3rem;
-                    height: 3rem;
-                    border: none;
+                    width: 3.2rem;
+                    height: 3.2rem;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                     cursor: pointer;
-                    background-color: #c2c2c2;
+                    background-color: #fff;
+                    border: 1px solid rgba(0, 0, 0, 0.09);
                     &:hover {
                         opacity: 0.8;
                     }
                 }
                 .quantityInput {
-                    height: 3rem;
+                    height: 3.2rem;
                     border: none;
-                    margin: 0 0.3rem;
-                    width: 6rem;
+                    width: 5rem;
                     text-align: center;
+                    font-size: 1.6rem;
 
+                    border-top: 1px solid rgba(0, 0, 0, 0.09);
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.09);
                     &::-webkit-outer-spin-button,
                     &::-webkit-inner-spin-button {
                         -webkit-appearance: none;
@@ -101,12 +130,69 @@
                 .quantityCtrlBtn {
                 }
             }
+            .discountTicket {
+                display: inline-block;
+                width: 8rem;
+                height: 2.4rem;
+                line-height: 2.4rem;
+                background-color: #ccc;
+                text-align: center;
+                position: relative;
+                text-transform: uppercase;
+                font-size: 1.4rem;
+                background-color: #d0011b14;
+                color: var(--primary);
+                margin-right: 0.5rem;
+                &:before {
+                    content: '';
+                    position: absolute;
+                    left: -0.3rem;
+                    top: 0.3rem;
+                    width: 0.6rem;
+                    height: calc(100% - 0.6rem);
+                    background-repeat: repeat;
+                    background-size: 0.6rem 0.6rem;
+                    background-image: radial-gradient(#fff 2px, transparent 0);
+                }
+                &::after {
+                    content: '';
+                    position: absolute;
+                    right: -0.3rem;
+                    top: 0.3rem;
+                    width: 0.6rem;
+                    height: calc(100% - 0.6rem);
+                    background-repeat: repeat;
+                    background-size: 0.6rem 0.6rem;
+                    background-image: radial-gradient(#fff 2px, transparent 0);
+                }
+            }
         }
     }
     .actions {
         display: flex;
     }
     .policy {
+        border-top: 1px solid #e3e3e3;
+        padding-top: 1rem;
+        font-size: 1.4rem;
+        display: flex;
+        align-items: center;
+
+        & > span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            & > svg {
+                font-size: 3rem;
+                margin-right: 0.8rem;
+                color: var(--primary);
+            }
+        }
+        & > span:nth-child(2) {
+            margin-left: 3.5rem;
+            color: var(--text-secondary-o);
+        }
     }
 }
 

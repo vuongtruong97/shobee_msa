@@ -10,13 +10,17 @@ function RequireAuth({ allowRoles = [ROLES.USER] }) {
     const isLoggedIn = useSelector((state) => state.user.isLoggedIn)
     const isAllow = allowRoles.includes(userInfo.role)
 
-    return isAllow ? (
-        <Outlet />
-    ) : isLoggedIn ? (
-        <Navigate state={{ from: location }} replace to='/not-author' />
-    ) : (
-        isLoggedIn && <Navigate state={{ from: location }} replace to='/auth/login' />
-    )
+    if (!isLoggedIn) {
+        return <Navigate state={{ from: location }} replace to='/auth/login' />
+    }
+
+    if (isLoggedIn && isAllow) {
+        return <Outlet />
+    }
+
+    if (isLoggedIn && !isAllow) {
+        return <Navigate state={{ from: location }} replace to='/not-author' />
+    }
 }
 
 export default RequireAuth
