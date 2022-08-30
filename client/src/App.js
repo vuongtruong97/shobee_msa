@@ -25,6 +25,7 @@ const Home = React.lazy(() => import('./pages/Home/Home'))
 const User = React.lazy(() => import('./pages/User/User'))
 const Category = React.lazy(() => import('./pages/Category/Category'))
 const Cart = React.lazy(() => import('./pages/Cart/Cart'))
+const CartCheckout = React.lazy(() => import('./pages/Cart/CartCheckout'))
 
 const RegisterShop = React.lazy(() => import('./pages/Shop/RegisterShop'))
 const ShopAnalystics = React.lazy(() =>
@@ -94,6 +95,7 @@ function App() {
                             }
                         >
                             <Route path='cart' element={<Cart />} />
+                            <Route path='checkout' element={<CartCheckout />} />
                         </Route>
 
                         <Route

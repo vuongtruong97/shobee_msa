@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import styles from './Cart.module.scss'
 import Checkbox from 'common-components/UI/Checkbox/Checkbox'
-import { Link } from 'react-router-dom'
-import { AiFillWechat, AiFillShop, AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai'
-import numberWithCommas from 'utils/numberWithCommas'
-import cartAPI from 'services/cart-api/cart-api'
+import NeuButton from 'common-components/UI/Button/NeuButton'
+import Modal from 'common-components/UI/Modal/Modal'
+
+import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import {
+    AiFillWechat,
+    AiFillShop,
+    AiOutlineMinus,
+    AiOutlinePlus,
+    AiOutlineShoppingCart,
+} from 'react-icons/ai'
+
+import numberWithCommas from 'utils/numberWithCommas'
 import ordersAPI from 'services/orders-api/orders-api'
-import Modal from 'common-components/UI/Modal/Modal'
-import NeuButton from 'common-components/UI/Button/NeuButton'
+import cartAPI from 'services/cart-api/cart-api'
 
 function Cart() {
     const [cart, setCart] = useState([])
@@ -19,27 +28,31 @@ function Cart() {
     const [showModal, setShowModal] = useState(false)
     const [deleteInfo, setDeleteInfo] = useState([])
 
+    const navigate = useNavigate()
+    const location = useLocation()
+    const userInfo = useSelector((state) => state.user.info)
+
     const fetchCartData = async () => {
         try {
             const res = await cartAPI.getCartDetail()
 
             if (res.data.success) {
-                let cartGroupByShopId = []
+                let cartGroupByShop_id = []
                 res.data.data.products.forEach((prod) => {
-                    const index = cartGroupByShopId.findIndex(
+                    const index = cartGroupByShop_id.findIndex(
                         (shop) => shop.shop._id === prod.shop_id._id
                     )
                     if (index !== -1) {
-                        cartGroupByShopId[index].products.push(prod)
+                        cartGroupByShop_id[index].products.push(prod)
                     } else {
-                        cartGroupByShopId.push({
+                        cartGroupByShop_id.push({
                             shop: prod.shop_id,
                             products: [prod],
                         })
                     }
                 })
 
-                setCart(cartGroupByShopId)
+                setCart(cartGroupByShop_id)
             }
         } catch (error) {
             console.log(error)
@@ -96,12 +109,12 @@ function Cart() {
     }
 
     // check shop select all
-    const handleCheckBoxAllShop = (shopId) => {
-        const shopInCart = cart.find((shop) => shop.shop._id === shopId)
-        const shopOrderIndex = orders.findIndex((shop) => shop.shopId === shopId)
+    const handleCheckBoxAllShop = (shop_id) => {
+        const shopInCart = cart.find((shop) => shop.shop._id === shop_id)
+        const shopOrderIndex = orders.findIndex((shop) => shop.shop_id === shop_id)
 
         const listProd = cart
-            .find((shop) => shop.shop._id === shopId)
+            .find((shop) => shop.shop._id === shop_id)
             .products.map((prod) => prod.id._id)
 
         const every = listProd.every((prod) => listOrder.includes(prod))
@@ -119,14 +132,14 @@ function Cart() {
         // create list order from cart
         const listOrdeR = shopInCart.products.map((prod) => {
             return {
-                prodId: prod.id._id,
+                id: prod.id._id,
                 price: prod.id.price,
                 quantity: prod.quantity,
             }
         })
         const shopOrder = {
-            shopId,
-            orders: listOrdeR,
+            shop_id,
+            products: listOrdeR,
         }
         // if not exist shop insert new shoporder to orders
         if (shopOrderIndex === -1) {
@@ -134,13 +147,13 @@ function Cart() {
             return setOrders([...orders])
         }
         // if exist shop replace with full shop order
-        if (shopInCart.products.length > orders[shopOrderIndex].orders.length) {
+        if (shopInCart.products.length > orders[shopOrderIndex].products.length) {
             orders.splice(shopOrderIndex, 1)
             orders[shopOrderIndex] = shopOrder
             return setOrders([...orders])
         }
         // if full shop order ==> remove out of orders
-        if (shopInCart.products.length === orders[shopOrderIndex].orders.length) {
+        if (shopInCart.products.length === orders[shopOrderIndex].products.length) {
             orders.splice(shopOrderIndex, 1)
             return setOrders([...orders])
         }
@@ -148,65 +161,69 @@ function Cart() {
 
     // compute order
     const handleCheckBoxProd = (data) => {
-        const prodID = data.prodInfo.prodId
+        const id = data.prodInfo.id
 
         let newListOrder
-        if (!listOrder.includes(prodID)) {
-            listOrder.push(prodID)
+        if (!listOrder.includes(id)) {
+            listOrder.push(id)
             newListOrder = [...listOrder]
         } else {
-            newListOrder = listOrder.filter((prod) => prod !== prodID)
+            newListOrder = listOrder.filter((prod) => prod !== id)
         }
         setListOrder(newListOrder)
-        const shopIndex = orders.findIndex((order) => order.shopId === data.shopId)
+        const shopIndex = orders.findIndex((order) => order.shop_id === data.shop_id)
 
         //not exist shop
         if (shopIndex === -1) {
-            orders.push({ shopId: data.shopId, orders: [data.prodInfo] })
+            orders.push({ shop_id: data.shop_id, products: [data.prodInfo] })
             return setOrders([...orders])
         }
         // exist shop
         if (shopIndex !== -1) {
-            const prodIndex = orders[shopIndex].orders.findIndex(
-                (order) => order.prodId === data.prodInfo.prodId
+            const prodIndex = orders[shopIndex].products.findIndex(
+                (prod) => prod.id === data.prodInfo.id
             )
             //net exist prod
             if (prodIndex === -1) {
-                orders[shopIndex].orders.push(data.prodInfo)
+                orders[shopIndex].products.push(data.prodInfo)
             }
             //exist prod
             if (prodIndex !== -1) {
-                const newOrders = orders[shopIndex].orders.filter(
-                    (order) => order.prodId !== data.prodInfo.prodId
+                const newOrders = orders[shopIndex].products.filter(
+                    (order) => order.id !== data.prodInfo.id
                 )
                 if (newOrders.length === 0) {
                     // clear empty shop
                     orders.splice(shopIndex, 1)
                 } else {
-                    orders[shopIndex].orders = newOrders
+                    orders[shopIndex].products = newOrders
                 }
             }
             return setOrders([...orders])
         }
     }
 
-    const handleCheckedCheckBox = (shopId, prodId) => {
-        const shop = orders.find((shop) => shop.shopId === shopId)
+    const handleCheckedCheckBox = (shop_id, id) => {
+        const shop = orders.find((shop) => shop.shop_id === shop_id)
         if (!shop) return false
-        const exist = shop.orders.some((order) => order.prodId === prodId)
+        const exist = shop.products.some((order) => order.id === id)
         return !!exist
     }
 
-    const handleCheckedCheckAllShop = (shopId) => {
-        const shopInCart = cart.find((shop) => shop.shop._id === shopId)
+    const handleCheckedCheckAllShop = (shop_id) => {
+        const shopInCart = cart.find((shop) => shop.shop._id === shop_id)
 
-        const shopInOrders = orders.find((shop) => shop.shopId === shopId)
+        const shopInOrders = orders.find((shop) => shop.shop_id === shop_id)
 
         if (!shopInOrders) return false
 
-        if (shopInCart.products.length === shopInOrders.orders.length) {
+        if (shopInCart.products.length === shopInOrders.products.length) {
             return true
         }
+    }
+
+    const handleCheckedCheckAllCart = () => {
+        return cart.every((shop) => handleCheckedCheckAllShop(shop.shop._id))
     }
 
     useEffect(() => {
@@ -224,24 +241,51 @@ function Cart() {
             { total: 0, quantity: 0 }
         )
 
-        setAgregate(aggregate)
+        setAgregate({ ...aggregate })
     }, [orders, cart, listOrder])
 
     const handleCreateOrder = async () => {
-        try {
-            if (listOrder.length > 0) {
-                console.log(orders)
-                const result = await ordersAPI.createOrders({ list_order: orders })
+        if (!userInfo.address || !userInfo.phone) {
+            return toast.info(
+                <div>
+                    <Link to='/user/profile' state={{ from: location }}>
+                        Chưa có địa chỉ, số điện thoại, vui lòng cập nhật thông tin tại
+                        đây!
+                    </Link>
+                </div>,
+                { autoClose: 7000 }
+            )
+        }
 
-                console.log(result)
+        // navigate('/checkout', { state: { orders: orders } })
+
+        console.log(orders)
+        console.log(userInfo)
+        try {
+            const res = await ordersAPI.createOrders({
+                list_order: orders,
+                address: userInfo.address,
+            })
+            console.log(res)
+
+            if (res.data.success) {
+                toast.success(res.data.message)
             }
         } catch (error) {
+            toast.error(error.message)
             console.log(error)
         }
     }
 
+    const selectAllCart = () => {
+        cart.forEach((shop) => handleCheckBoxAllShop(shop.shop._id))
+    }
+
     return (
-        <div className='container' style={{ position: 'relative' }}>
+        <div className='container'>
+            <div className={styles.heading}>
+                <AiOutlineShoppingCart /> Giỏ Hàng
+            </div>
             <div className={styles.cart}>
                 <div className={styles.shop_list}>
                     {cart.map((shop) => (
@@ -275,9 +319,9 @@ function Cart() {
                                                 id={prod.id._id}
                                                 onChange={() => {
                                                     handleCheckBoxProd({
-                                                        shopId: shop.shop._id,
+                                                        shop_id: shop.shop._id,
                                                         prodInfo: {
-                                                            prodId: prod.id._id,
+                                                            id: prod.id._id,
                                                             quantity: prod.quantity,
                                                             price: prod.id.price,
                                                         },
@@ -391,7 +435,10 @@ function Cart() {
             </div>
             <div className={styles.checkout}>
                 <div className={styles.checkbox}>
-                    <Checkbox />
+                    <Checkbox
+                        checked={handleCheckedCheckAllCart()}
+                        // onChange={selectAllCart}
+                    />
                     &nbsp;
                     <span>Chọn tất cả</span>
                 </div>
@@ -400,7 +447,7 @@ function Cart() {
                 </div>
                 <div>
                     Tổng thanh toán:
-                    <b style={{ color: 'var(--primary)' }}>
+                    <b className={styles.totalCartPrice}>
                         {numberWithCommas(aggregate.total ? aggregate.total : 0)}₫
                     </b>
                 </div>
@@ -409,9 +456,10 @@ function Cart() {
                     onClick={handleCreateOrder}
                     className={styles.checkout_btn}
                 >
-                    Đặt hàng
+                    Mua Hàng
                 </button>
             </div>
+
             {showModal && (
                 <Modal
                     onClose={() => {

@@ -52,9 +52,13 @@ router.patch(
 
             console.log(newInfo)
 
-            const result = await User.findByIdAndUpdate(id, {
-                ...newInfo,
-            })
+            const result = await User.findByIdAndUpdate(
+                id,
+                {
+                    ...newInfo,
+                },
+                { new: true }
+            )
 
             if (!result) {
                 throw new BadRequestError('Đã có lỗi xảy ra, vui lòng thử lại sau')

@@ -11,13 +11,26 @@ import {
 const router = Router()
 
 router.post('/api/orders', async (req: Request, res: Response, next: NextFunction) => {
-    const { list_order } = req.body
+    const { list_order, address } = req.body
+    const { id } = req.user!
     const prod_change_info: ProductsChangeData['products'] = []
     const shop_has_orders: ProductsChangeData['shops'] = []
 
+    console.log(list_order)
+    console.log(list_order[0].products)
+
+    const orders = list_order.map((order: any) => {
+        return {
+            shop_id: order.shop_id,
+            products: order.products,
+            address: address,
+            buyer: id,
+        }
+    })
+
     try {
         await bulkTransactionWithRetry(async (session) => {
-            await Order.create(list_order, { session, new: true })
+            await Order.create(orders, { session, new: true })
 
             await Promise.all(
                 list_order.map(async (order: any) => {

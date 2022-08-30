@@ -8,6 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import Input from 'common-components/UI/Input/Input'
 import Select from 'common-components/UI/Select/Select'
 import { useSelector } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 
 import userAPI from 'services/user-api/user-api'
@@ -27,6 +28,11 @@ function Profile() {
     const [listWard, setListWard] = useState([])
     const [avatarUrlPreview, setAvatarUrlPreview] = useState()
     const [showUpdateAddress, setShowUpdateAddress] = useState(false)
+
+    const location = useLocation()
+    const navigate = useNavigate()
+
+    const from = location?.state?.from?.pathname || ''
 
     const schema = yup
         .object({
@@ -66,7 +72,6 @@ function Profile() {
     })
 
     console.log(errors)
-    console.log(userInfo)
 
     useEffect(
         () =>
@@ -170,11 +175,15 @@ function Profile() {
             if (isDirty && dirtyFieldsKeys.length > 0) {
                 const result = await userAPI.updateUserInfo(appendFormData(data))
                 if (result.data.success) {
+                    console.log(result)
                     dispatch(userActions.setUserInfo(result.data.data))
                     setShowUpdateAddress(false)
                 }
                 if (result.data.message) {
                     toast.success('Cập nhật thông tin thành công')
+                    if (from) {
+                        navigate(from, { replace: true })
+                    }
                 }
             } else {
                 toast.info('Không có thông tin nào thay đổi')

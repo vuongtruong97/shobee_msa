@@ -9,14 +9,14 @@ interface OrderAttrs {
         id: string
         quantity: number
     }[]
-    product_count: number
-    address: string
-    status: OrderStatus
+    product_count?: number
+    address: object
+    status?: OrderStatus
     ship_info?: any
     payment_status?: boolean
-    ship_payment: number
-    merchandise_payment: number
-    total_payment: number
+    ship_payment?: number
+    merchandise_payment?: number
+    total_payment?: number
 }
 
 interface OrderDoc extends Document {
@@ -29,7 +29,7 @@ interface OrderDoc extends Document {
         status: string
         price: number
     }[]
-    product_count: number
+    product_count?: number
     address: string
     status: OrderStatus
     ship_info?: any
@@ -54,7 +54,11 @@ const orderSchema = new Schema({
         },
     ],
     product_count: Number,
-    address: String,
+    address: {
+        province: Object,
+        district: Object,
+        ward: Object,
+    },
     status: {
         type: String,
         enum: Object.values(OrderStatus),

@@ -9,6 +9,7 @@ import {
 } from '@vuongtruongnb/common'
 
 import { Product } from '../../models/Product'
+import { Cart } from '../../models/Cart'
 import { ConsumeMessage, Channel } from 'amqplib'
 
 export class ProductCreatedConsumer extends Consumer<OrderCreatedEvent> {

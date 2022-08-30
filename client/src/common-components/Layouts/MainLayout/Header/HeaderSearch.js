@@ -11,7 +11,7 @@ import PopOver from 'common-components/UI/PopOver/PopOver'
 import HeaderCart from './HeaderCart'
 import EmptyCart from './EmptyCart'
 import useOnclickOutSide from 'hooks/useOnClickOutSide'
-// import shobeeLogo from 'assets/images/logo.png'
+import shobeeLogo from 'assets/images/logo2.png'
 
 const cx = classNames.bind(styles)
 
@@ -69,9 +69,9 @@ function HeaderSearch() {
         <div className={cx('search')}>
             <MobileNav />
             <Link to='/' className={cx('logo')}>
-                <FaShopify />
-                <span>Shobee</span>
-                {/* <img style={{ width: '100px' }} src={shobeeLogo} /> */}
+                {/* <FaShopify />
+                <span>Shobee</span> */}
+                <img style={{ width: '150px' }} src={shobeeLogo} />
             </Link>
             <div className={cx('control')}>
                 <div className={cx('form-search')}>
@@ -104,6 +104,7 @@ function HeaderSearch() {
                                         onClick={handleResetSearch}
                                         to={`/product/${result.id}`}
                                         className={styles.resultInfo}
+                                        key={result.id}
                                     >
                                         <div>{result.name}</div>
                                         <img
@@ -126,7 +127,8 @@ function HeaderSearch() {
                     </ul>
                 </div>
             </div>
-            <div
+            <Link
+                to={'/cart'}
                 onMouseOver={() => {
                     setShowCart(true)
                 }}
@@ -143,7 +145,7 @@ function HeaderSearch() {
                     )}
                     {!isLogedIn && <EmptyCart />}
                 </PopOver>
-            </div>
+            </Link>
         </div>
     )
 }
