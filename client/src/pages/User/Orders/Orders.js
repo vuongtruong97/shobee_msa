@@ -108,86 +108,92 @@ function Orders() {
             </div>
             <div className={styles.list}>
                 {orders.length > 0 &&
-                    orders.map((order) => (
-                        <div className={styles.order} key={order.id}>
-                            <div className={styles.orderHeading}>
-                                <div className={styles.status}>
-                                    <Link to='#'>
-                                        <MdStorefront />
-                                        Xem shop
-                                    </Link>
-                                    <div className={styles.statusInfo}>
-                                        {order?.status === 'COMPLETED' && (
-                                            <span className={styles.shipStatus}>
-                                                <FaShippingFast /> Giao hàng thành công
+                    orders
+                        .slice(0)
+                        .reverse()
+                        .map((order) => (
+                            <div className={styles.order} key={order.id}>
+                                <div className={styles.orderHeading}>
+                                    <div className={styles.status}>
+                                        <Link to='#'>
+                                            <MdStorefront />
+                                            Xem shop
+                                        </Link>
+                                        <div className={styles.statusInfo}>
+                                            {order?.status === 'COMPLETED' && (
+                                                <span className={styles.shipStatus}>
+                                                    <FaShippingFast /> Giao hàng thành
+                                                    công
+                                                </span>
+                                            )}
+                                            {order?.status === 'SHIPPING' && (
+                                                <span className={styles.shipStatus}>
+                                                    <FaShippingFast /> Đơn hàng đang được
+                                                    vận chuyển
+                                                </span>
+                                            )}
+                                            <span className={styles.orderStatus}>
+                                                {order.isRated
+                                                    ? 'ĐÃ ĐÁNH GIÁ'
+                                                    : handleStatus(order.status)}
                                             </span>
-                                        )}
-                                        {order?.status === 'SHIPPING' && (
-                                            <span className={styles.shipStatus}>
-                                                <FaShippingFast /> Đơn hàng đang được vận
-                                                chuyển
-                                            </span>
-                                        )}
-                                        <span className={styles.orderStatus}>
-                                            {order.isRated
-                                                ? 'ĐÃ ĐÁNH GIÁ'
-                                                : handleStatus(order.status)}
-                                        </span>
+                                        </div>
+                                    </div>
+                                    <div className={styles.orderProducts}>
+                                        {order.products.map((prod) => (
+                                            <div className={styles.product}>
+                                                <img
+                                                    className={styles.productImage}
+                                                    src={prod.id.image_url}
+                                                />
+                                                <div className={styles.productDetail}>
+                                                    <div className={styles.prodName}>
+                                                        {prod.id.name}
+                                                    </div>
+                                                    <div className={styles.prodQty}>
+                                                        x1
+                                                    </div>
+                                                </div>
+                                                <div className={styles.productPrice}>
+                                                    ₫{numberWithCommas(prod.id.price)}
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
-                                <div className={styles.orderProducts}>
-                                    {order.products.map((prod) => (
-                                        <div className={styles.product}>
-                                            <img
-                                                className={styles.productImage}
-                                                src={prod.id.image_url}
-                                            />
-                                            <div className={styles.productDetail}>
-                                                <div className={styles.prodName}>
-                                                    {prod.id.name}
-                                                </div>
-                                                <div className={styles.prodQty}>x1</div>
-                                            </div>
-                                            <div className={styles.productPrice}>
-                                                ₫{numberWithCommas(prod.id.price)}
-                                            </div>
-                                        </div>
-                                    ))}
+                                <div className={styles.orderTotalPrice}>
+                                    <img src={icon} /> Tổng số tiền:
+                                    <span className={styles.price}>
+                                        ₫
+                                        {numberWithCommas(
+                                            order.products.reduce((acc, cur) => {
+                                                acc += +cur.id.price
+                                                return acc
+                                            }, 0)
+                                        )}
+                                    </span>
+                                </div>
+                                <div className={styles.orderOptions}>
+                                    {order?.status === 'COMPLETED' && (
+                                        <Button>Mua Lại</Button>
+                                    )}
+                                    {order?.status === 'PENDING' && (
+                                        <Button>Huỷ đơn hàng</Button>
+                                    )}
+                                    <Button secondary>Liên hệ người bán</Button>
+                                    {order.status === 'COMPLETED' && !order?.isRated && (
+                                        <Button
+                                            onClick={() => {
+                                                setReviewOrder(order)
+                                                setShowReviewModal(true)
+                                            }}
+                                        >
+                                            Đánh giá ngay
+                                        </Button>
+                                    )}
                                 </div>
                             </div>
-                            <div className={styles.orderTotalPrice}>
-                                <img src={icon} /> Tổng số tiền:
-                                <span className={styles.price}>
-                                    ₫
-                                    {numberWithCommas(
-                                        order.products.reduce((acc, cur) => {
-                                            acc += +cur.id.price
-                                            return acc
-                                        }, 0)
-                                    )}
-                                </span>
-                            </div>
-                            <div className={styles.orderOptions}>
-                                {order?.status === 'COMPLETED' && (
-                                    <Button>Mua Lại</Button>
-                                )}
-                                {order?.status === 'PENDING' && (
-                                    <Button>Huỷ đơn hàng</Button>
-                                )}
-                                <Button secondary>Liên hệ người bán</Button>
-                                {order.status === 'COMPLETED' && !order?.isRated && (
-                                    <Button
-                                        onClick={() => {
-                                            setReviewOrder(order)
-                                            setShowReviewModal(true)
-                                        }}
-                                    >
-                                        Đánh giá ngay
-                                    </Button>
-                                )}
-                            </div>
-                        </div>
-                    ))}
+                        ))}
                 {orders.length === 0 && <EmptyOrders />}
             </div>
             {showReviewModal && (

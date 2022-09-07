@@ -8,10 +8,20 @@ import { AiFillLike } from 'react-icons/ai'
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md'
 import defautAvatar from 'assets/images/fallback_ava.jpg'
 import emptyCart from 'assets/images/empty_cart.png'
+import reviewAPI from 'services/review-api/review-api'
 
 const cx = classNames.bind(styles)
 
 function ProductRating() {
+    const getReview = () => {
+        try {
+            ;(async () => {
+                const res = await reviewAPI.getReview({})
+                console.log(res)
+            })()
+        } catch (error) {}
+    }
+    getReview()
     return (
         <WrapStyle>
             <div className={styles.reviewWrap}>

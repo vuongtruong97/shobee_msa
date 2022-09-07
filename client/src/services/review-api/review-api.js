@@ -6,6 +6,10 @@ const reviewAPI = {
         const url = REVIEW_URL.REVIEW_CREATE
         return axiosClient.post(url, data)
     },
+    getReview(params) {
+        const url = REVIEW_URL.REVIEW_GET
+        return axiosClient.get(url, { params: params })
+    },
     getMyShopInfo() {
         return axiosClient({
             url: REVIEW_URL.GET_USER_SHOP,
