@@ -1,0 +1,134 @@
+.review {
+    font-size: 1.6rem;
+    position: fixed;
+    inset: 0 0 0 0;
+    background-color: #0000008d;
+    backdrop-filter: blur(1px);
+    z-index: 9998;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .reviewWrap {
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        background-color: #fff;
+        .overlay {
+            width: 50vw;
+            border: 1px solid var(--primary);
+            padding: 1.3rem;
+            border-radius: 0.5rem;
+            max-height: 90vh;
+            overflow-y: scroll;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+
+            .heading {
+                display: flex;
+                justify-content: space-between;
+                .title {
+                    padding: 1rem 0;
+                    font-size: 2.3rem;
+                }
+                & > svg {
+                    cursor: pointer;
+                    transform: scale(1.5);
+                }
+            }
+            .attention {
+                display: flex;
+                align-items: center;
+                padding: 1rem;
+                background-color: var(--secondary-yellow);
+                border-radius: 0.5rem;
+                font-size: 1.55rem;
+                & > svg {
+                    color: #fff;
+
+                    flex-shrink: 0;
+                    margin-right: 0.5rem;
+                }
+                & > p {
+                    color: #fff;
+                }
+            }
+            .products {
+                display: flex;
+                flex-direction: column;
+                padding-top: 1rem;
+                .prod {
+                    margin-bottom: 1rem;
+                    display: flex;
+
+                    .prodName {
+                        margin-top: 0.3rem;
+                        font-weight: 500;
+                        text-transform: uppercase;
+                    }
+                }
+            }
+
+            .ratingForm {
+                display: flex;
+                flex-direction: column;
+                & > * {
+                    margin-bottom: 1rem;
+                }
+                .rating {
+                    display: flex;
+                    justify-content: center;
+                }
+                .suggests {
+                    .suggest {
+                        user-select: none;
+                        display: inline-block;
+                        padding: 0.5rem 1rem;
+                        border: 1px solid #ccc;
+                        margin-right: 0.5rem;
+                        margin-bottom: 0.5rem;
+                        border-radius: 5rem;
+                        &:hover {
+                            background-color: #ccc;
+                            cursor: pointer;
+                        }
+                    }
+                }
+                .comment {
+                    resize: none;
+                    height: 10rem;
+                    font-family: inherit;
+                    padding: 1rem;
+                    font-size: 1.5rem;
+                }
+                .images {
+                    display: flex;
+                    .imagesLabel {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        color: var(--primary);
+                        flex-direction: column;
+                        width: 30%;
+                        border: 1px solid var(--primary);
+                        padding: 2rem 4rem;
+                        cursor: pointer;
+                    }
+                }
+                .control {
+                    display: flex;
+                    justify-content: flex-end;
+                    & > button {
+                        margin-left: 2rem;
+                    }
+                }
+            }
+        }
+    }
+}
+.prodImg {
+    width: 8rem;
+    height: 8rem;
+    margin-right: 1rem;
+    border: 1px solid #ccc;
+}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styles from './ProfileSideBar.module.scss'
 import { Link, NavLink } from 'react-router-dom'
 import { FaUser, FaFileInvoice, FaBell, FaTicketAlt, FaBitcoin } from 'react-icons/fa'
+import { FcList, FcSpeaker } from 'react-icons/fc'
 import fallBackAvatar from '../../../assets/images/fallback_ava.jpg'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
@@ -103,7 +104,7 @@ function ProfileSideBar() {
                     style={({ isActive }) => (isActive ? activeStyle : undefined)}
                 >
                     <div className={styles.option}>
-                        <FaFileInvoice />
+                        <FcList />
                         <span>Đơn mua</span>
                     </div>
                 </NavLink>
@@ -112,7 +113,7 @@ function ProfileSideBar() {
                     style={({ isActive }) => (isActive ? activeStyle : undefined)}
                 >
                     <div className={styles.option}>
-                        <FaBell />
+                        <FcSpeaker />
                         <span>Thông báo</span>
                     </div>
                 </NavLink>
@@ -121,7 +122,7 @@ function ProfileSideBar() {
                     style={({ isActive }) => (isActive ? activeStyle : undefined)}
                 >
                     <div className={styles.option}>
-                        <FaTicketAlt />
+                        <FaTicketAlt fill='var(--secondary-green)' />
                         <span>Kho Voucher</span>
                     </div>
                 </NavLink>
@@ -130,7 +131,7 @@ function ProfileSideBar() {
                     style={({ isActive }) => (isActive ? activeStyle : undefined)}
                 >
                     <div className={styles.option}>
-                        <FaBitcoin />
+                        <FaBitcoin fill='var(--secondary-yellow)' />
                         <span>Shobee xu</span>
                     </div>
                 </NavLink>

@@ -5,6 +5,7 @@ import { OrderCreatedPublisher } from '../events/publishers/orders-create-publis
 interface ProductsChangeData {
     products: { id: string; quantity: number }[]
     shops: string[]
+    buyer: string
 }
 
 const orderCreatedInternalQueue = new Queue<ProductsChangeData>('order.created.product', {
@@ -22,7 +23,7 @@ orderCreatedInternalQueue.process(async (job) => {
 
         await new OrderCreatedPublisher(
             rabbitWrapper.channels.orderCreatedChannel
-        ).publish({ products: job.data.products })
+        ).publish({ products: job.data.products, shops: [], buyer: job.data.buyer })
     } catch (error) {
         console.log(error)
     }

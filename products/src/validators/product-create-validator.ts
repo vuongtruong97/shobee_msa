@@ -12,8 +12,8 @@ export const productCreateValidator = [
         .notEmpty()
         .withMessage('Vui lòng nhập mô tả sản phẩm')
         .trim()
-        .isLength({ min: 55, max: 1155 })
-        .withMessage('Mô tả sản phẩm từ 55 đến 1155 ký tự'),
+        .isLength({ min: 55, max: 3555 })
+        .withMessage('Mô tả sản phẩm từ 55 đến 3555 ký tự'),
     body('category')
         .notEmpty()
         .withMessage('Vui lòng chọn danh mục')

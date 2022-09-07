@@ -44,7 +44,7 @@ function SortBar({ onFilter }) {
                 </div>
                 <div
                     onClick={() => {
-                        onFilter({ sort: 'sold' })
+                        onFilter()
                     }}
                     className={styles.option}
                 >
@@ -52,7 +52,7 @@ function SortBar({ onFilter }) {
                 </div>
                 <div
                     onClick={() => {
-                        onFilter({ sort: '-_id' })
+                        onFilter({ sortBy: 'createdAt', order: '-1' })
                     }}
                     className={styles.option}
                 >
@@ -84,7 +84,7 @@ function SortBar({ onFilter }) {
                             >
                                 <div
                                     onClick={() => {
-                                        onFilter({ sort: 'price' })
+                                        onFilter({ sortBy: 'price', order: '1' })
                                     }}
                                     className={styles.priceOption}
                                 >
@@ -92,7 +92,7 @@ function SortBar({ onFilter }) {
                                 </div>
                                 <div
                                     onClick={() => {
-                                        onFilter({ sort: '-price' })
+                                        onFilter({ sortBy: 'price', order: '-1' })
                                     }}
                                     className={styles.priceOption}
                                 >

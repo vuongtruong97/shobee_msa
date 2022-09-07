@@ -9,7 +9,7 @@ type OrderQuery = {
 }
 
 interface OrderFilter {
-    buyer: string
+    shop_id: string
     status?: OrderStatus
 }
 
@@ -23,7 +23,7 @@ router.get(
             const { limit = 10, sort = 'desc', status } = req.query as OrderQuery
 
             const filter: OrderFilter = {
-                buyer: req.user!.id,
+                shop_id: id,
             }
 
             if (status) {
@@ -31,12 +31,21 @@ router.get(
             }
 
             const orders = await Order.find(filter)
+                .populate({
+                    path: 'products',
+                    populate: [
+                        {
+                            path: 'id',
+                            model: 'Product',
+                        },
+                    ],
+                })
                 .limit(+limit)
                 .sort(sort)
 
             res.send({
                 success: true,
-                data: orders,
+                data: orders || [],
             })
         } catch (error: any) {
             console.log(error)

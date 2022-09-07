@@ -123,10 +123,7 @@ function NavBar() {
                                 >
                                     Tài Khoản Của Tôi
                                 </Link>
-                                <Link
-                                    className={styles['popover-item']}
-                                    to='user/profile'
-                                >
+                                <Link className={styles['popover-item']} to='user/orders'>
                                     Đơn Mua
                                 </Link>
                                 <div

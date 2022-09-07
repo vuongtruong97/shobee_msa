@@ -1,0 +1,127 @@
+.tableContainer {
+    padding: 4rem;
+    width: 100%;
+    font-size: 1.6rem;
+    margin-bottom: 2rem;
+    .filter {
+        display: flex;
+        padding: 3rem 0;
+        border-bottom: 1px solid var(--text-tertiary-o);
+        & > div {
+            margin-right: 2rem;
+            & > label {
+                margin-right: 1rem;
+            }
+            & > input {
+                font-size: 1.5rem;
+                height: 3rem;
+                padding-left: 1rem;
+            }
+            & select {
+                font-size: 1.5rem;
+
+                height: 3rem;
+            }
+        }
+    }
+    .actions {
+        display: block;
+        padding-bottom: 2rem;
+        float: right;
+    }
+    .title {
+        text-align: center;
+        font-size: 26px;
+        margin-bottom: 30px;
+        font-weight: 800;
+        color: var(--text-primary-o);
+    }
+    .table {
+        border-collapse: collapse;
+        width: 100%;
+        font-weight: 500;
+        font-size: 1.4rem;
+        thead {
+            .tr {
+                .th {
+                    .proper {
+                        font-weight: 800;
+                        font-size: 1.3rem;
+                        letter-spacing: 1px;
+                        text-transform: uppercase;
+                        color: var(--text-tertiary-o);
+                        border-bottom: 1px solid var(--text-tertiary-o);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        overflow-wrap: normal;
+                        height: 4rem;
+                    }
+                }
+            }
+        }
+        tbody {
+            .tr {
+                .td {
+                    border-bottom: 1px solid var(--text-tertiary-o);
+                    position: relative;
+                    text-align: center;
+                    padding: 0.5rem;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 15rem;
+                    & > svg {
+                        transform: scale(1.5);
+                        cursor: pointer;
+                        color: var(--primary);
+                    }
+                    .orderId {
+                        text-align: center;
+                    }
+                    .status {
+                        display: inline-block;
+                        color: #fff;
+                        padding: 0.5rem;
+                        background-color: var(--primary);
+                        border-radius: 0.3rem;
+                        width: fit-content;
+                    }
+                    .product {
+                        display: flex;
+                        align-items: center;
+                        margin-bottom: 1rem;
+                        .productImg {
+                            flex-shrink: 0;
+                            border: 1px solid #ccc;
+                            width: 5rem;
+                            height: 5rem;
+                            background-size: cover;
+                            background-position: center;
+                            margin-right: 2rem;
+                        }
+                        .prodName {
+                            flex: 1;
+                            text-align: start;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+                        .prodQty {
+                            flex-shrink: 0;
+                            width: 3rem;
+                        }
+                    }
+
+                    .edit {
+                        color: var(--success);
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+    .emptyTableMessage {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+}

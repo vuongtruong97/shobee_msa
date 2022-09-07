@@ -258,6 +258,9 @@ main {
     display: flex;
     justify-content: flex-end;
     margin-top: 5rem;
+    & > a {
+        margin-right: 2rem;
+    }
     & > button {
         margin-right: 2rem;
     }

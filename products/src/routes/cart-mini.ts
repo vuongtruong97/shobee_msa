@@ -22,7 +22,7 @@ router.get(
                         select: 'image_urls name price',
                     },
                 })
-                .slice('products', +limit)
+                .slice('products', -+limit)
                 .cache({ time: 120, key: id })
 
             if (!cart) {

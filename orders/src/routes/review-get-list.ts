@@ -13,7 +13,7 @@ type ProductSearchQuery = {
 }
 
 type ReviewSearchFilter = {
-    product_id?: string
+    products_id?: string
     comment?: { $ne: null }
     image_urls?: { $exists: true; $not: { $size: 0 } }
     rating?: {
@@ -33,7 +33,7 @@ router.get(
             const filter = {} as ReviewSearchFilter
 
             if (product_id) {
-                filter.product_id = product_id
+                filter.products_id = product_id
             }
 
             if (rating) {
@@ -56,7 +56,7 @@ router.get(
 
             res.send({
                 success: true,
-                data: reviews,
+                data: reviews || [],
             })
         } catch (error) {
             console.log(error)

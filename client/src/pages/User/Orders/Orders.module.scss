@@ -1,0 +1,148 @@
+.orders {
+    font-size: 1.5rem;
+    .sort {
+        height: 5.3rem;
+        display: flex;
+        background-color: #fff;
+        .sortOption {
+            padding: 1.6rem;
+            flex: 1;
+            text-align: center;
+            &.active {
+                border-bottom: 2px solid var(--primary);
+            }
+            &:hover {
+                color: var(--primary);
+                cursor: pointer;
+            }
+        }
+        border-bottom: 2px solid #e8e8e8;
+    }
+    .search {
+        background: #eaeaea;
+        display: flex;
+        align-items: center;
+        margin: 12px 0;
+        padding: 12px 0;
+        & > svg {
+            margin: 0 1.5rem;
+            fill: #bbb;
+            transform: scale(1.2);
+        }
+        & > input {
+            border: none;
+            flex: 1;
+            outline: none;
+            background-color: inherit;
+            font-size: 1.5rem;
+        }
+    }
+    .list {
+        display: flex;
+        flex-direction: column;
+        .order {
+            margin: 1.2rem 0;
+            box-shadow: 0 1px 1px 0 rgb(0 0 0 / 5%);
+            border-radius: 0.125rem;
+            background: #fff;
+            .orderHeading {
+                padding: 2.4rem 2.4rem 1.2rem 2.4rem;
+                .status {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    height: 3rem;
+                    padding-bottom: 1.2rem;
+                    border-bottom: 1px solid #ccc;
+                    & > a {
+                        border: 1px solid #ccc;
+                        padding: 0.3rem 0.5rem;
+                        font-size: 1.4rem;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        & > svg {
+                            margin-right: 0.3rem;
+                        }
+                    }
+                    .statusInfo {
+                        display: flex;
+                        .shipStatus {
+                            color: var(--secondary-green);
+                            padding-right: 1rem;
+                            border-right: 1px solid #ccc;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            & svg {
+                                margin-right: 0.5rem;
+                                transform: scale(1.2);
+                            }
+                        }
+                        .orderStatus {
+                            padding-left: 1rem;
+                            color: var(--primary);
+                            text-transform: uppercase;
+                        }
+                    }
+                }
+                .orderProducts {
+                    padding-top: 1.2rem;
+                    display: flex;
+                    flex-direction: column;
+                    .product {
+                        display: flex;
+                        margin-bottom: 1rem;
+                        .productImage {
+                            width: 8rem;
+                            height: 8rem;
+                            border: 1px solid #ccc;
+                            margin-right: 1.2rem;
+                        }
+                        .productDetail {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-between;
+                            flex: 1;
+                            .prodName {
+                                padding-top: 0.5rem;
+                            }
+                            .prodQty {
+                                padding-bottom: 0.5rem;
+                            }
+                        }
+                        .productPrice {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            padding: 2rem;
+                            color: var(--primary);
+                        }
+                    }
+                }
+            }
+            .orderTotalPrice {
+                padding: 2.4rem;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                & > img {
+                    margin-right: 1rem;
+                }
+                .price {
+                    margin-left: 1rem;
+                    font-size: 2.5rem;
+                    color: var(--primary);
+                }
+            }
+            .orderOptions {
+                display: flex;
+                padding: 2.4rem;
+                justify-content: flex-end;
+                & > button {
+                    margin-left: 2rem;
+                }
+            }
+        }
+    }
+}

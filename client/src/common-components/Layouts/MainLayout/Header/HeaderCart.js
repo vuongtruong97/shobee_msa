@@ -9,26 +9,29 @@ function HeaderCart({ data, total }) {
         <div className={styles.cart}>
             <div className={styles.cart_title}>Sản phẩm mới thêm</div>
             {data &&
-                data.map((prod) => (
-                    <Link
-                        to={`/product/${prod.id._id}`}
-                        key={prod.id._id}
-                        className={styles.product}
-                    >
-                        <div
-                            className={styles.image}
-                            style={{
-                                backgroundImage: `url(${
-                                    prod.id.image_urls && prod.id.image_urls[0]
-                                })`,
-                            }}
-                        ></div>
-                        <div className={styles.name}>{prod.id.name}</div>
-                        <div className={styles.price}>
-                            {numberWithCommas(prod.id.price)}&nbsp;<i>₫</i>
-                        </div>
-                    </Link>
-                ))}
+                data
+                    .slice(0)
+                    .reverse()
+                    .map((prod) => (
+                        <Link
+                            to={`/product/${prod.id._id}`}
+                            key={prod.id._id}
+                            className={styles.product}
+                        >
+                            <div
+                                className={styles.image}
+                                style={{
+                                    backgroundImage: `url(${
+                                        prod.id.image_urls && prod.id.image_urls[0]
+                                    })`,
+                                }}
+                            ></div>
+                            <div className={styles.name}>{prod.id.name}</div>
+                            <div className={styles.price}>
+                                {numberWithCommas(prod.id.price)}&nbsp;<i>₫</i>
+                            </div>
+                        </Link>
+                    ))}
             {data.length === 0 && (
                 <div
                     className={styles.product}

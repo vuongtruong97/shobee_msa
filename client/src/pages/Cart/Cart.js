@@ -25,8 +25,10 @@ function Cart() {
     const [orders, setOrders] = useState([])
     const [aggregate, setAgregate] = useState({})
     const [listOrder, setListOrder] = useState([])
-    const [showModal, setShowModal] = useState(false)
     const [deleteInfo, setDeleteInfo] = useState([])
+    const [showModal, setShowModal] = useState(false)
+    const [showSuccessModal, setShowSuccessModal] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -257,6 +259,9 @@ function Cart() {
             )
         }
 
+        setShowSuccessModal(true)
+        setIsLoading(true)
+
         // navigate('/checkout', { state: { orders: orders } })
 
         console.log(orders)
@@ -267,9 +272,9 @@ function Cart() {
                 address: userInfo.address,
             })
             console.log(res)
-
             if (res.data.success) {
                 toast.success(res.data.message)
+                setIsLoading(false)
             }
         } catch (error) {
             toast.error(error.message)
@@ -487,6 +492,35 @@ function Cart() {
                             Huỷ Bỏ
                         </NeuButton>
                     </div>
+                </Modal>
+            )}
+
+            {showSuccessModal && (
+                <Modal
+                    onClose={() => {
+                        setShowSuccessModal(false)
+                    }}
+                    title={
+                        isLoading
+                            ? 'Đang tạo đơn hàng ...'
+                            : 'Đơn hàng đã được tạo thành công'
+                    }
+                >
+                    {isLoading && <span>LOADING...</span>}
+                    {!isLoading && (
+                        <div className={styles.confirmBtnModal}>
+                            <Link to='/'>
+                                <NeuButton rounded primary>
+                                    Tiếp tục mua sắm
+                                </NeuButton>
+                            </Link>
+                            <Link to='/user/orders'>
+                                <NeuButton primary rounded>
+                                    Xem đơn hàng
+                                </NeuButton>
+                            </Link>
+                        </div>
+                    )}
                 </Modal>
             )}
         </div>

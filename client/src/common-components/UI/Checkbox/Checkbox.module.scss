@@ -1,12 +1,12 @@
 .checkbox {
     display: inline-block;
     font-size: 1.3rem !important;
+    user-select: none;
     label {
-        width: 2rem;
-        height: 2rem;
+        width: 1.5rem;
+        height: 1.5rem;
         background-color: rgb(255, 255, 255);
         border: 1px solid var(--primary);
-        border-radius: 50%;
         display: block;
         overflow: hidden;
     }
@@ -17,6 +17,7 @@
             background: var(--primary-gradient);
             &::before {
                 content: '✔';
+                font-size: 0.9rem;
                 display: flex;
                 justify-content: center;
                 align-items: center;

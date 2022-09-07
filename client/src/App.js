@@ -42,6 +42,7 @@ const AddProduct = React.lazy(() =>
 )
 
 const Chat = React.lazy(() => import('./pages/Shop/Chat/Chat'))
+const ShopOrders = React.lazy(() => import('./pages/Shop/components/Orders/Orders'))
 
 const AuthPage = React.lazy(() => import('./pages/Auth/AuthPage'))
 
@@ -50,6 +51,7 @@ const NotFound = React.lazy(() => import('./pages/NotFound/NotFound'))
 const NotAuthorPage = React.lazy(() => import('./pages/NotFound/NotAuthor'))
 
 const Profile = React.lazy(() => import('./pages/User/Profile/Profile'))
+const Orders = React.lazy(() => import('./pages/User/Orders/Orders'))
 const Address = React.lazy(() => import('./pages/User/Address/Address'))
 
 function App() {
@@ -109,7 +111,7 @@ function App() {
                                 <Route path='profile' element={<Profile />} />
                                 <Route path='address' element={<Address />} />
                                 <Route path='password' element={<Address />} />
-                                <Route path='orders' element={<Profile />} />
+                                <Route path='orders' element={<Orders />} />
                                 <Route path='notifications' element={<Profile />} />
                                 <Route path='vouchers' element={<Profile />} />
                             </Route>
@@ -137,6 +139,7 @@ function App() {
                                 <Route path='add' element={<AddProduct />} />
                             </Route>
                             <Route path='chat' element={<Chat />} />
+                            <Route path='order' element={<ShopOrders />} />
                         </Route>
                     </Route>
 

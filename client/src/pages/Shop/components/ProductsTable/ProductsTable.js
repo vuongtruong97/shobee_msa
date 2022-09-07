@@ -7,6 +7,7 @@ import Checkbox from 'common-components/UI/Checkbox/Checkbox'
 import Rating from 'common-components/UI/Rating/Rating'
 import Modal from 'common-components/UI/Modal/Modal'
 import UpdateProdForm from '../ActionProductForm/UpdateProdForm'
+import SearchProduct from '../SearchProduct/SearchProduct'
 
 import productAPI from 'services/product-api/product-api'
 import numberWithCommas from 'utils/numberWithCommas'

@@ -70,6 +70,7 @@ router.post('/api/orders', async (req: Request, res: Response, next: NextFunctio
         await orderCreatedInternalQueue.add({
             products: prod_change_info,
             shops: shop_has_orders,
+            buyer: id,
         })
 
         res.status(201).send({

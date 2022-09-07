@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(
     cors({
         origin: [
-            'http://localhost:3007',
+            'http://shobee.local',
             'https://snobdev.online',
             'https://shobee.snobdev.online',
         ],

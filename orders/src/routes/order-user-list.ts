@@ -30,6 +30,15 @@ router.get(
             }
 
             const orders = await Order.find(filter)
+                .populate({
+                    path: 'products',
+                    populate: [
+                        {
+                            path: 'id',
+                            model: 'Product',
+                        },
+                    ],
+                })
                 .limit(+limit)
                 .sort(sort)
 

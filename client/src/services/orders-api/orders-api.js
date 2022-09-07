@@ -6,23 +6,24 @@ const ordersAPI = {
         const url = ORDERS_API.CREATE_ORDERS
         return axiosClient.post(url, litsOrder)
     },
-    getORDERS(id) {
-        const url = ORDERS_API.GET_ORDERS.replace(':id', id)
-        return axiosClient.get(url)
+    getCurrentUserOrder(params) {
+        console.log(params)
+        const url = ORDERS_API.USER_ORDERS
+        return axiosClient.get(url, { params: params })
     },
-    updateORDERS(id, newData) {
-        const url = ORDERS_API.UPDATE_ORDERS.replace(':id', id)
-        return axiosClient.post(url, newData)
+    getShopOrders(id, params) {
+        const url = ORDERS_API.SHOP_ORDERS.replace(':id', id)
+        return axiosClient.get(url, { params: params })
     },
+    updateOrderStatus(id, body) {
+        const url = ORDERS_API.ORDER_UPDATE.replace(':id', id)
+        return axiosClient.patch(url, body)
+    },
+    //////////
     deleteORDERS(id) {
         const url = ORDERS_API.DELETE_ORDERS.replace(':id', id)
         return axiosClient.delete(url)
     },
-    getListProd(params) {
-        const url = ORDERS_API.GET_LIST
-        return axiosClient.get(url, { params: params })
-    },
-    getListProdOfCategory() {},
 }
 
 export default ordersAPI

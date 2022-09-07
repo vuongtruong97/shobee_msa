@@ -4,6 +4,7 @@ import { Product } from '../models/Product'
 import { redisClient } from '@vuongtruongnb/common'
 
 type ProductSearchQuery = {
+    stt?: string
     category?: string
     minPrice?: string
     maxPrice?: string
@@ -13,6 +14,7 @@ type ProductSearchQuery = {
     order?: SortOrder
     sortBy: 'createdAt' | 'sold' | 'price'
     page?: string
+    rate?: string
 }
 
 type ProductSearchFilter = {
@@ -24,9 +26,9 @@ type ProductSearchFilter = {
         $lte?: number
     }
     rating?: {
-        $eq: number
+        $lte: number
     }
-    status?: 'OLD' | 'NEW'
+    status?: string
 }
 
 const router = Router()
@@ -36,6 +38,7 @@ router.get(
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const {
+                stt = 'NEW',
                 keyword,
                 limit = 30,
                 category,
@@ -45,6 +48,7 @@ router.get(
                 order = 1,
                 sortBy,
                 page = 1,
+                rate,
             } = req.query as ProductSearchQuery
 
             const filter = {} as ProductSearchFilter
@@ -57,6 +61,12 @@ router.get(
             }
             if (shopId) {
                 filter.shop = shopId
+            }
+            if (stt) {
+                filter.status = stt
+            }
+            if (rate) {
+                filter.rating = { $lte: +rate }
             }
             if (keyword) {
                 filter.$text = { $search: keyword }
