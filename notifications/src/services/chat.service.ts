@@ -2,6 +2,7 @@ import { Socket } from 'socket.io'
 import { v4 as uuidv4 } from 'uuid'
 import EventEmitter from 'events'
 
+// @ts-ignore
 const io = global._io
 
 const eventbus = new EventEmitter()

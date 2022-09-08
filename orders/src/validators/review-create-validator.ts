@@ -2,11 +2,9 @@ import { body } from 'express-validator'
 import { validateRequest } from '@vuongtruongnb/common'
 
 export const reviewCreateValidator = [
-    body('products_id')
-        .notEmpty()
-        .withMessage('Id sản phẩm là bắt buộc')
-        .isArray()
-        .withMessage('Ids sản phẩm không đúng'),
+    body('products_id').notEmpty().withMessage('Id sản phẩm là bắt buộc'),
+    // .isArray()
+    // .withMessage('Ids sản phẩm không đúng'),
     body('order_id')
         .notEmpty()
         .withMessage('Id đơn hàng là bắt buộc')

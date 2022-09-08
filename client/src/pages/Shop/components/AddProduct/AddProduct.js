@@ -152,7 +152,6 @@ function AddProduct() {
         data.list = listImage
         data.shop = userInfo.shop
         delete data.images
-        console.log(data)
         const fd = appendFormData(data)
         try {
             const result = await toastPromise(

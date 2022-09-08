@@ -34,6 +34,10 @@ const userAPI = {
         }
         return axiosClient.patch(url, info, config)
     },
+    getUserById(id) {
+        const url = USER_API.USER_ID.replace(':id', id)
+        return axiosClient.get(url)
+    },
 }
 
 export default userAPI

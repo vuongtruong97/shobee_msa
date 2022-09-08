@@ -3,6 +3,7 @@ import styles from './ChatDialog.module.scss'
 import Filter from 'bad-words'
 import { useSelector } from 'react-redux'
 import chatAPI from 'services/chat-api/chat-api'
+import userAPI from 'services/user-api/user-api'
 import socket from 'services/socketIO'
 import Picker from '@emoji-mart/react'
 import data from '@emoji-mart/data'
@@ -22,6 +23,7 @@ function ChatDialog({ user, currentChat, setCurrentChat }) {
     const [showEmojiPicker, setShowEmojiPicker] = useState(false)
     const [activeSendBtn, setActiveSendBtn] = useState(false)
     const [arrivalMessage, setArrivalMessage] = useState(null)
+    const [receiverInfo, setReceiverInfo] = useState()
 
     const lastMessRef = useRef()
     const chatInputRef = useRef()
@@ -32,7 +34,7 @@ function ChatDialog({ user, currentChat, setCurrentChat }) {
             setArrivalMessage({
                 sender: data.sender,
                 text: data.text,
-                _id: data._id,
+                id: data.id,
                 createdAt: Date.now(),
             })
         })
@@ -48,8 +50,8 @@ function ChatDialog({ user, currentChat, setCurrentChat }) {
     useEffect(() => {
         const getMessages = async () => {
             try {
-                const res = await chatAPI.getMessages(currentChat._id)
-                setMessages(res.data)
+                const res = await chatAPI.getMessages(currentChat.id)
+                setMessages(res.data.data)
                 console.log('message fetch', res.data)
             } catch (err) {
                 console.log(err)
@@ -60,6 +62,19 @@ function ChatDialog({ user, currentChat, setCurrentChat }) {
         }
     }, [currentChat])
 
+    const getUserById = async (id) => {
+        try {
+            const res = await userAPI.getUserById(id)
+            if (res.data.success) {
+                setReceiverInfo(res.data.data)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    useEffect(() => {
+        getUserById(currentChat.members.filter((mem) => mem !== user.id))
+    }, [currentChat])
     // handle submit message
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -67,35 +82,35 @@ function ChatDialog({ user, currentChat, setCurrentChat }) {
         try {
             let currentChatId
             // handle client create new conversation
-            if (!currentChat._id) {
+            if (!currentChat.id) {
                 const res = await chatAPI.createConversations({
-                    senderId: user._id,
+                    senderId: user.id,
                     receiverId: reduxChatState,
                 })
 
                 console.log(res)
                 if (res.data.success) {
-                    currentChatId = res.data.data._id
+                    currentChatId = res.data.data.id
                 }
-                setCurrentChat({ ...currentChat, _id: currentChatId })
+                setCurrentChat({ ...currentChat, id: currentChatId })
             } else {
-                currentChatId = currentChat._id
+                currentChatId = currentChat.id
             }
 
             const message = {
-                sender: user._id,
+                sender: user.id,
                 text,
                 conversationId: currentChatId,
             }
 
             const receiverId = currentChat.members.find(
-                (memberId) => memberId !== user._id
+                (memberId) => memberId !== user.id
             )
 
             socket.emit(
                 'sendMessage',
                 {
-                    senderId: user._id,
+                    senderId: user.id,
                     receiverId,
                     text,
                 },
@@ -105,8 +120,9 @@ function ChatDialog({ user, currentChat, setCurrentChat }) {
             )
 
             const res = await chatAPI.sendMessage(message)
-            setMessages([...messages, res.data])
+            setMessages([...messages, res.data.data])
             chatInputRef.current.value = ''
+            chatInputRef.current.focus()
         } catch (err) {
             console.log(err)
         }
@@ -118,7 +134,10 @@ function ChatDialog({ user, currentChat, setCurrentChat }) {
     }, [messages])
     return (
         <div className={styles.conversation_dialog}>
-            <div className={styles.conv_head}>{currentChat.members[0].name}</div>
+            <div className={styles.conv_head}>
+                <img src={receiverInfo?.avatar_url} />
+                {receiverInfo && receiverInfo.email}
+            </div>
             <div className={styles.conversation_wrap}>
                 <div className={styles.conv_list_chat}>
                     {currentChat.type === 'dummy' && (
@@ -127,11 +146,11 @@ function ChatDialog({ user, currentChat, setCurrentChat }) {
                     {messages.map((mess) => (
                         <div
                             className={
-                                mess.sender === user._id
+                                mess.sender === user.id
                                     ? styles.rightMess
                                     : styles.leftMess
                             }
-                            key={mess._id}
+                            key={mess.id}
                             ref={lastMessRef}
                         >
                             <p>{mess.text}</p>
@@ -144,7 +163,16 @@ function ChatDialog({ user, currentChat, setCurrentChat }) {
             </div>
             <form onSubmit={handleSubmit} className={styles.conv_chat_control}>
                 <div className={styles.conv_chat_input}>
-                    <textarea spellCheck='false' ref={chatInputRef} resize='false' />
+                    <textarea
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                handleSubmit(e)
+                            }
+                        }}
+                        spellCheck='false'
+                        ref={chatInputRef}
+                        resize='false'
+                    />
                 </div>
                 <div className={styles.conv_chat_option}>
                     <div className={styles.leftOptions}>

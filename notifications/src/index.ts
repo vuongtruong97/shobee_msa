@@ -1,12 +1,12 @@
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
 
-import { app } from './app'
+import { server } from './app'
 
 const start = async () => {
     let PORT = 3000
     if (process.env.NODE_ENV === 'test') {
-        PORT = 3007
+        PORT = 3006
         dotenv.config()
     }
     if (!process.env.JWT_KEY) {
@@ -21,11 +21,11 @@ const start = async () => {
         throw new Error('RABBIT_URI is not define')
     }
     try {
-        await mongoose.connect(`${process.env.MONGO_URI}/catalog`)
+        await mongoose.connect(`${process.env.MONGO_URI}/noti`)
 
         console.log('Connected to catalog mongodb 😁')
-        app.listen(PORT, () => {
-            console.log('Catalogs service run on port 3000 😎', PORT)
+        server.listen(PORT, () => {
+            console.log('Noti service run on port 3000 😎', PORT)
         })
     } catch (error) {
         console.log(error)

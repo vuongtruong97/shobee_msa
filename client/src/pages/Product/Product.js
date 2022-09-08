@@ -40,7 +40,7 @@ function Product() {
             <ProductInfo product={product} />
             <ShopInfo shopinfo={product.shop} />
             <ProductDetail product={product} />
-            <ProductRating>Product Rating</ProductRating>
+            <ProductRating product={product}>Product Rating</ProductRating>
         </div>
     )
 }

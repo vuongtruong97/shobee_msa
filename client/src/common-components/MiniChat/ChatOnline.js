@@ -4,9 +4,12 @@ import styles from './ChatOnline.module.scss'
 import { BsSearch } from 'react-icons/bs'
 import { IoCloseOutline } from 'react-icons/io5'
 
-function ChatOnline({ conversations, handleSetCurrentChat }) {
+import chatLogo from 'assets/images/chatLogo.svg'
+
+function ChatOnline({ conversations, handleSetCurrentChat, getUserById, user }) {
     const [convSearchValue, setConvSearchValue] = useState('')
     const [showClearConvSearch, setShowClearConvSearch] = useState(false)
+    const [convDetails, setConvDetails] = useState()
 
     const convSearchInput = useRef() // pending
 
@@ -19,6 +22,19 @@ function ChatOnline({ conversations, handleSetCurrentChat }) {
         }
     }, [convSearchValue])
 
+    useEffect(() => {
+        const getConversationsDetail = async () => {
+            const list = await Promise.all(
+                conversations.map(
+                    async (conv) =>
+                        await getUserById(conv.members.filter((id) => id !== user.id))
+                )
+            )
+
+            setConvDetails(list)
+        }
+        getConversationsDetail()
+    }, [conversations.length])
     return (
         <div className={styles.conversationList}>
             <div className={styles.searchInput}>
@@ -45,25 +61,31 @@ function ChatOnline({ conversations, handleSetCurrentChat }) {
                 </div>
             </div>
             <div className={styles.conversations}>
-                {conversations.map((conv) => (
+                {conversations.map((conv, i) => (
                     <div
                         onClick={() => {
                             handleSetCurrentChat(conv)
                         }}
                         className={styles.conversation}
-                        key={conv._id}
+                        key={conv.id}
                     >
                         <div
                             className={styles.conv_avatar}
                             style={{
-                                backgroundImage: `url("https://cf.shopee.vn/file/4b49f33ccd2e90466d88f2a5f2ee83f9_tn")`,
+                                backgroundImage: `url(${
+                                    convDetails && convDetails[i]?.avatar_url
+                                })`,
                             }}
                         ></div>
                         <div className={styles.conv_info}>
-                            <div className={styles.name}>lanlankid.offical</div>
+                            <div className={styles.name}>
+                                {convDetails && convDetails[i]?.email}
+                            </div>
                             <div className={styles.last_mess}>
                                 <div className={styles.text}>
-                                    <span>Cậu ơi tớ bảo này địt mẹ cậu nhéasdfsdf</span>
+                                    <span>
+                                        <i></i> Đang hoạt động
+                                    </span>
                                 </div>
                                 <span className={styles.time}>17:05</span>
                             </div>

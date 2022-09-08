@@ -2,17 +2,22 @@ import { Router, Request, Response, NextFunction } from 'express'
 import { BadRequestError, NotFoundError, OrderStatus } from '@vuongtruongnb/common'
 import { Order } from '../models/Order'
 import { Review } from '../models/Review'
+import { diskUpload } from '../utils/uploadImage'
 import { reviewCreateValidator } from '../validators/review-create-validator'
+import { uploadToCloudinary } from '../utils/uploadImage'
 
 const router = Router()
 
 router.post(
     '/api/orders/reviews',
+    diskUpload.fields([{ name: 'images', maxCount: 6 }]),
     reviewCreateValidator,
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { products_id, order_id, rating, comment } = req.body
             const { id } = req.user!
+            const { files } = req
+            let review: any
 
             const isRateable = await Order.findOne({
                 _id: order_id,
@@ -25,14 +30,6 @@ router.post(
                 )
             }
 
-            // const existingReview = await Review.findOne({
-            //     user_id: id,
-            //     id: order_id,
-            // })
-            // if (existingReview) {
-            //     throw new BadRequestError('Bạn đã đánh giá sản phẩm này')
-            // }
-
             const order = await Order.findById(order_id)
 
             if (!order) {
@@ -43,21 +40,39 @@ router.post(
                 throw new BadRequestError('Bạn không thể đánh giá sản phẩm này')
             }
 
-            // const orderHasProd = order.products.some(
-            //     (prod) => prod.id.toString() === product_id.toString()
-            // )
+            // @ts-ignore:next-line
+            if (files['images']) {
+                const resUrls = await Promise.all(
+                    // @ts-ignore:next-line
+                    files['images'].map(async (file: Express.Multer.File) => {
+                        return await uploadToCloudinary(file.path, {
+                            access_mode: 'public',
+                            folder: 'reviews',
+                            format: 'webp',
+                            transformation: { width: 200, height: 200, crop: 'fill' },
+                        })
+                    })
+                )
 
-            // if (!orderHasProd) {
-            //     throw new BadRequestError('Sản phẩm không có trong đơn hàng')
-            // }
+                const urls = resUrls.map((url: any) => url.url)
 
-            const review = Review.build({
-                products_id,
-                user_id: id,
-                rating: +rating,
-                comment,
-                order_id,
-            })
+                review = Review.build({
+                    products_id: JSON.parse(products_id),
+                    user_id: id,
+                    rating: +rating,
+                    comment,
+                    order_id,
+                    image_urls: urls,
+                })
+            } else {
+                review = Review.build({
+                    products_id: JSON.parse(products_id),
+                    user_id: id,
+                    rating: +rating,
+                    comment,
+                    order_id,
+                })
+            }
 
             const updateOrder = await Order.findByIdAndUpdate(order_id, { isRated: true })
             if (!updateOrder) {

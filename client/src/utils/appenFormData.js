@@ -10,6 +10,7 @@ const appendFormData = (data) => {
         if (data[key] instanceof File) {
             formData.append(key, data[key][0])
         }
+
         if (Array.isArray(data[key])) {
             for (let i = 0; i < data[key].length; i++) {
                 if (data[key][i] instanceof File) {
@@ -18,6 +19,7 @@ const appendFormData = (data) => {
             }
             return
         }
+
         formData.append(key, data[key])
     })
 

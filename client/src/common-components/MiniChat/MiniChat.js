@@ -5,6 +5,7 @@ import { BsArrowDownSquare, BsArrowLeftSquare, BsArrowRightSquare } from 'react-
 import socket from 'services/socketIO'
 import { useSelector } from 'react-redux'
 import chatAPI from 'services/chat-api/chat-api'
+import userAPI from 'services/user-api/user-api'
 
 import ChatOnline from './ChatOnline'
 import EmptyChat from './EmptyChat'
@@ -22,7 +23,34 @@ function MiniChat() {
     const [onlineUsers, setOnlineUsers] = useState([])
     const [conversations, setConversations] = useState([])
 
-    console.log(onlineUsers)
+    const getConversations = async () => {
+        try {
+            const res = await chatAPI.getConversations()
+            if (res.data.success) {
+                setConversations(res.data.data)
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    const getUserById = async (id) => {
+        try {
+            const res = await userAPI.getUserById(id)
+            if (res.data.success) {
+                return res.data.data
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        socket.on('notification', (payload) => {
+            if (!conversations.some((conv) => conv.members.includes(payload.senderId))) {
+                getConversations()
+            }
+        })
+    }, [])
 
     // handle redux chat State
     useEffect(() => {
@@ -39,7 +67,7 @@ function MiniChat() {
                 }
             } else {
                 setCurrentChat({
-                    members: [reduxChatState, user._id],
+                    members: [reduxChatState, user.id],
                     type: 'dummy',
                 })
             }
@@ -60,12 +88,12 @@ function MiniChat() {
     // handle set curren chat
     const handleSetCurrentChat = (data) => {
         setShowDialog(true)
-        if (currentChat?._id === data._id) return
+        if (currentChat?.id === data.id) return
         setCurrentChat(data)
     }
     // handle online users
     useEffect(() => {
-        socket.emit('addUser', user._id)
+        socket.emit('addUser', user.id)
         if (conversations) {
             socket.on('getUsers', (users) => {
                 setOnlineUsers(
@@ -73,23 +101,16 @@ function MiniChat() {
                 )
             })
         }
-    }, [user._id])
+    }, [user.id])
 
     // handle conversation and list chat
     useEffect(() => {
-        const getConversations = async () => {
-            try {
-                const res = await chatAPI.getConversations()
-                if (res.data.success) {
-                    setConversations(res.data.data)
-                }
-            } catch (err) {
-                console.log(err)
-            }
-        }
+        getConversations()
+
         const getListChat = async () => {
             try {
                 const res = await chatAPI.getListChat()
+                console.log(res)
                 if (res.data.success) {
                     setListChat(res.data.data)
                 }
@@ -97,11 +118,11 @@ function MiniChat() {
                 console.log(err)
             }
         }
-        if (!!user._id) {
+        if (!!user.id) {
             getConversations()
             // getListChat()
         }
-    }, [user._id, currentChat])
+    }, [user.id, currentChat])
 
     return (
         <div className={styles.miniChat}>
@@ -145,6 +166,8 @@ function MiniChat() {
                                         user={user}
                                         currentChat={currentChat}
                                         setCurrentChat={setCurrentChat}
+                                        getConversations={getConversations}
+                                        getUserById={getUserById}
                                     />
                                 )}
                             </div>
@@ -153,6 +176,8 @@ function MiniChat() {
                         <ChatOnline
                             conversations={conversations}
                             handleSetCurrentChat={handleSetCurrentChat}
+                            getUserById={getUserById}
+                            user={user}
                         />
                     </div>
                 </div>

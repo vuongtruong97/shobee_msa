@@ -8,11 +8,11 @@ import appendFormData from 'utils/appenFormData'
 import reviewAPI from 'services/review-api/review-api'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import toastPromise from 'utils/toastPromise'
 
 const rootModal = document.getElementById('root-modal')
 
 function OrderReviewModal({ order, onClose, onSuccess }) {
-    console.log(order)
     const [images, setImages] = useState([])
     const [inputValue, setInputValue] = useState('')
     const [star, setStar] = useState(5)
@@ -31,20 +31,21 @@ function OrderReviewModal({ order, onClose, onSuccess }) {
 
     const handleSubmitReview = async (e) => {
         e.preventDefault()
+        const products_id = order.products.map((prod) => prod.id._id)
+
         const data = appendFormData({
-            products_id: order.products.map((prod) => prod.id._id),
+            products_id: JSON.stringify(products_id),
             order_id: order.id,
             rating: star,
             comment: inputValue,
+            images: images,
         })
 
         try {
-            const res = await reviewAPI.createReview({
-                products_id: order.products.map((prod) => prod.id._id),
-                order_id: order.id,
-                rating: star,
-                comment: inputValue,
-            })
+            const res = await await toastPromise(
+                reviewAPI.createReview(data),
+                'Đang tạo đánh giá 🛒🛒🛒'
+            )
             if (res.data.success) {
                 toast.success(res.data.message)
                 onSuccess((prev) => {
@@ -93,7 +94,7 @@ function OrderReviewModal({ order, onClose, onSuccess }) {
                                     <Rating
                                         initialRating={star}
                                         onChange={(star) => {
-                                            console.log(star)
+                                            setStar(star)
                                         }}
                                         style={{ fontSize: '4rem' }}
                                     />

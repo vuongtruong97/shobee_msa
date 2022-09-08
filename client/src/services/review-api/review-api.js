@@ -7,6 +7,7 @@ const reviewAPI = {
         return axiosClient.post(url, data)
     },
     getReview(params) {
+        console.log(params)
         const url = REVIEW_URL.REVIEW_GET
         return axiosClient.get(url, { params: params })
     },

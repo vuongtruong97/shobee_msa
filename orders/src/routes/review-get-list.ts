@@ -10,6 +10,7 @@ type ProductSearchQuery = {
     order?: SortOrder
     product_id: string
     limit: string
+    page?: string
 }
 
 type ReviewSearchFilter = {
@@ -27,10 +28,18 @@ router.get(
     '/api/orders/reviews/list',
     async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { product_id, limit, rating, filter_type, order, sort_type } =
-                req.query as ProductSearchQuery
+            const {
+                product_id,
+                limit,
+                rating,
+                filter_type,
+                page = '1',
+                order,
+                sort_type,
+            } = req.query as ProductSearchQuery
 
             const filter = {} as ReviewSearchFilter
+            const skip = (+page - 1) * +limit
 
             if (product_id) {
                 filter.products_id = product_id
@@ -49,14 +58,18 @@ router.get(
             }
 
             const reviews = await Review.find(filter)
+                .skip(skip)
+                .limit(+limit)
 
-            // if (!reviews) {
-            //     throw new NotFoundError()
-            // }
+            const totals = await Review.find(filter).countDocuments()
+
+            const pages = Math.ceil(totals / +limit)
 
             res.send({
                 success: true,
                 data: reviews || [],
+                pages,
+                totals: totals,
             })
         } catch (error) {
             console.log(error)

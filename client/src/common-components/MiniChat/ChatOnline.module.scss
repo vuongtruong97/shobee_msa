@@ -64,6 +64,7 @@
             .conv_info {
                 padding-left: 1rem;
                 overflow: hidden;
+                width: 100%;
                 .name {
                     font-weight: 500;
                     overflow: hidden;
@@ -72,12 +73,21 @@
                 }
                 .last_mess {
                     display: flex;
+                    justify-content: space-between;
+                    width: 100%;
                     .text {
                         font-size: 1.2rem;
                         -webkit-line-clamp: 1;
                         -webkit-box-orient: vertical;
                         overflow: hidden;
                         display: -webkit-box;
+                        & > span > i {
+                            display: inline-block;
+                            width: 0.7rem;
+                            height: 0.7rem;
+                            background-color: rgb(0, 193, 0);
+                            border-radius: 999px;
+                        }
                     }
                     .time {
                         font-size: 1.2rem;

@@ -4,6 +4,7 @@ import compression from 'compression'
 import cors from 'cors'
 import { json } from 'body-parser'
 import { currentuserRouter } from './routes/current-user'
+import { userByIdRouter } from './routes/get-user-id'
 import { signinRouter } from './routes/signin'
 import { signoutRouter } from './routes/signout'
 import { signupRouter } from './routes/signup'
@@ -33,6 +34,7 @@ app.use(signupRouter)
 app.use(signinRouter)
 app.use(signoutRouter)
 app.use(currentuserRouter)
+app.use(userByIdRouter)
 app.use(updateRouter)
 
 app.use('*', async (req: Request, res: Response, next: NextFunction) => {
