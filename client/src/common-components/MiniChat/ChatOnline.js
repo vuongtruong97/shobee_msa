@@ -4,7 +4,7 @@ import styles from './ChatOnline.module.scss'
 import { BsSearch } from 'react-icons/bs'
 import { IoCloseOutline } from 'react-icons/io5'
 
-import chatLogo from 'assets/images/chatLogo.svg'
+import dummyAvatar from 'assets/images/fallback_ava.jpg'
 
 function ChatOnline({ conversations, handleSetCurrentChat, getUserById, user }) {
     const [convSearchValue, setConvSearchValue] = useState('')
@@ -73,7 +73,8 @@ function ChatOnline({ conversations, handleSetCurrentChat, getUserById, user }) 
                             className={styles.conv_avatar}
                             style={{
                                 backgroundImage: `url(${
-                                    convDetails && convDetails[i]?.avatar_url
+                                    (convDetails && convDetails[i]?.avatar_url) ||
+                                    dummyAvatar
                                 })`,
                             }}
                         ></div>

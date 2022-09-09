@@ -44,7 +44,7 @@ function SortBar({ onFilter }) {
                 </div>
                 <div
                     onClick={() => {
-                        onFilter()
+                        onFilter({ sortBy: 'sold', order: '-1' })
                     }}
                     className={styles.option}
                 >

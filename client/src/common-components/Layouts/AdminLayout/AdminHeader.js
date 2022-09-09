@@ -9,10 +9,10 @@ import NeuButton from 'common-components/UI/Button/NeuButton'
 function AdminHeader() {
     const userInfo = useSelector((state) => state.user.info)
 
-    let avatarUrl = `${process.env.REACT_APP_BASE_URL}${userInfo.avatar_url}`
+    let avatarUrl
 
     if (!!userInfo.avatar_url) {
-        avatarUrl = `${process.env.REACT_APP_BASE_URL}${userInfo.avatar_url}`
+        avatarUrl = userInfo.avatar_url
     } else {
         avatarUrl = fallBackAvatar
     }

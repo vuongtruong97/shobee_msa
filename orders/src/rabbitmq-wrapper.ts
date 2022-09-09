@@ -27,7 +27,7 @@ class RabbitWrapper {
         }
         return {
             orderCreatedChannel: this._orderCreatedChannel,
-            ticketUpdateChannel: this._userUpdateChannel,
+            orderUpdateChannel: this._userUpdateChannel,
         }
     }
 

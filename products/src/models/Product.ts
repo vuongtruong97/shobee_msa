@@ -80,8 +80,8 @@ const productSchema = new Schema(
         label_ids: [{ type: Number }],
         invoice_option: Boolean,
         rating: {
-            rating_count: [{ type: Number }],
-            rating_star: Number,
+            rating_count: { type: [Number], default: [0, 0, 0, 0, 0, 0] },
+            rating_star: { type: Number, default: 5 },
         },
     },
     { timestamps: true }

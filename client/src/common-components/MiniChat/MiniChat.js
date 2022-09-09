@@ -56,6 +56,7 @@ function MiniChat() {
     useEffect(() => {
         if (!!reduxChatState) {
             // find exist conversation
+
             if (conversations.length > 0) {
                 console.log('run')
                 const existConversation = conversations.find((conv) =>
@@ -64,6 +65,11 @@ function MiniChat() {
 
                 if (existConversation) {
                     setCurrentChat(existConversation)
+                } else {
+                    setCurrentChat({
+                        members: [reduxChatState, user.id],
+                        type: 'dummy',
+                    })
                 }
             } else {
                 setCurrentChat({

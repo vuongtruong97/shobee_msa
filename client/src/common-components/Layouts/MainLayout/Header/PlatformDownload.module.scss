@@ -1,0 +1,19 @@
+.platform {
+    width: 19rem;
+    box-shadow: 5px 10px 26px -8px #000000;
+    border-radius: 0.3rem;
+    .image {
+        width: 100%;
+        border-radius: inherit;
+    }
+    .imagePlat {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 0 12px;
+        & > img {
+            width: 40%;
+            margin-bottom: 12px;
+        }
+    }
+}

@@ -18,9 +18,10 @@ function ProductRating({ product }) {
     const [total, setTotal] = useState()
     const [params, setParams] = useState({
         limit: 6,
+        filter_type: '',
+        rating: '',
+        page: '1',
     })
-
-    console.log(params)
 
     useEffect(() => {
         try {
@@ -61,64 +62,79 @@ function ProductRating({ product }) {
                         <Rating style={{ fontSize: '2rem' }} initialRating='5' />
                     </div>
                     <div className={styles.filter}>
-                        <div className={cx('filterBtn', { active: true })}>
-                            Tất cả ({total})
-                        </div>
                         <div
                             onClick={() => {
-                                handleSetParams({ rating: '5' })
+                                handleSetParams({ rating: '', filter_type: '' })
                             }}
-                            className={cx('filterBtn', { active: false })}
+                            className={cx('filterBtn', {
+                                active: params.rating === '' && params.filter_type === '',
+                            })}
                         >
-                            5 Sao
+                            Tất cả
+                            {params.rating === '' &&
+                                params.filter_type === '' &&
+                                `(${total})`}
                         </div>
                         <div
                             onClick={() => {
-                                handleSetParams({ rating: '4' })
+                                handleSetParams({ rating: '5', filter_type: '' })
                             }}
-                            className={cx('filterBtn', { active: false })}
+                            className={cx('filterBtn', { active: params.rating === '5' })}
                         >
-                            4 Sao
+                            5 Sao{params.rating === '5' && `(${total})`}
                         </div>
                         <div
                             onClick={() => {
-                                handleSetParams({ rating: '3' })
+                                handleSetParams({ rating: '4', filter_type: '' })
                             }}
-                            className={cx('filterBtn', { active: false })}
+                            className={cx('filterBtn', { active: params.rating === '4' })}
                         >
-                            3 Sao
+                            4 Sao{params.rating === '4' && `(${total})`}
                         </div>
                         <div
                             onClick={() => {
-                                handleSetParams({ rating: '2' })
+                                handleSetParams({ rating: '3', filter_type: '' })
                             }}
-                            className={cx('filterBtn', { active: false })}
+                            className={cx('filterBtn', { active: params.rating === '3' })}
                         >
-                            2 Sao
+                            3 Sao{params.rating === '3' && `(${total})`}
                         </div>
                         <div
                             onClick={() => {
-                                handleSetParams({ rating: '1' })
+                                handleSetParams({ rating: '2', filter_type: '' })
                             }}
-                            className={cx('filterBtn', { active: false })}
+                            className={cx('filterBtn', { active: params.rating === '2' })}
                         >
-                            1 Sao
+                            2 Sao{params.rating === '2' && `(${total})`}
                         </div>
                         <div
                             onClick={() => {
-                                handleSetParams({ filter_type: '0' })
+                                handleSetParams({ rating: '1', filter_type: '' })
                             }}
-                            className={cx('filterBtn', { active: false })}
+                            className={cx('filterBtn', { active: params.rating === '1' })}
                         >
-                            Có Bình Luận
+                            1 Sao{params.rating === '1' && `(${total})`}
                         </div>
                         <div
                             onClick={() => {
-                                handleSetParams({ filter_type: '1' })
+                                handleSetParams({ filter_type: '0', rating: '' })
                             }}
-                            className={cx('filterBtn', { active: false })}
+                            className={cx('filterBtn', {
+                                active: params.filter_type === '0',
+                            })}
+                        >
+                            Có Bình Luận{params.filter_type === '0' && `(${total})`}
+                        </div>
+                        <div
+                            onClick={() => {
+                                handleSetParams({ filter_type: '1', rating: '' })
+                            }}
+                            className={cx('filterBtn', {
+                                active: params.filter_type === '1',
+                            })}
                         >
                             Có Hình Ảnh / Video
+                            {params.filter_type === '1' && `(${total})`}
                         </div>
                     </div>
                 </div>
@@ -147,7 +163,7 @@ function ProductRating({ product }) {
                                         {review?.image_urls?.length > 0 && (
                                             <div className={styles.ratingImages}>
                                                 {review.image_urls.map((img) => (
-                                                    <img src={img} />
+                                                    <img key={img} src={img} />
                                                 ))}
                                             </div>
                                         )}
@@ -169,7 +185,14 @@ function ProductRating({ product }) {
                             <div className={cx('btn')}>
                                 <MdKeyboardArrowLeft />
                             </div>
-                            <div className={cx(['btn', 'no-outline'], { active: true })}>
+                            <div
+                                className={cx(['btn', 'no-outline'], {
+                                    active: params.page === '1',
+                                })}
+                                onClick={() => {
+                                    handleSetParams({ page: '1' })
+                                }}
+                            >
                                 1
                             </div>
                             {pages > 1 && (
@@ -177,7 +200,9 @@ function ProductRating({ product }) {
                                     onClick={() => {
                                         handleSetParams({ page: '2' })
                                     }}
-                                    className={cx(['btn', 'no-outline'])}
+                                    className={cx(['btn', 'no-outline'], {
+                                        active: params.page === '2',
+                                    })}
                                 >
                                     2
                                 </div>
@@ -187,7 +212,9 @@ function ProductRating({ product }) {
                                     onClick={() => {
                                         handleSetParams({ page: '3' })
                                     }}
-                                    className={cx(['btn', 'no-outline'])}
+                                    className={cx(['btn', 'no-outline'], {
+                                        active: params.page === '3',
+                                    })}
                                 >
                                     3
                                 </div>
@@ -197,7 +224,9 @@ function ProductRating({ product }) {
                                     onClick={() => {
                                         handleSetParams({ page: '4' })
                                     }}
-                                    className={cx(['btn', 'no-outline'])}
+                                    className={cx(['btn', 'no-outline'], {
+                                        active: params.page === '4',
+                                    })}
                                 >
                                     4
                                 </div>

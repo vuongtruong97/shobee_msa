@@ -9,11 +9,16 @@ import { MdSupportAgent } from 'react-icons/md'
 import PopOver from 'common-components/UI/PopOver/PopOver'
 import fallBackAvatar from 'assets/images/fallback_ava.jpg'
 
+import NotifiList from './NotifiList'
+import EmptyNotify from './EmptyNotify'
+import PlatformDownload from './PlatformDownload'
+
 import styles from './NavBar.module.scss'
 import classNames from 'classnames/bind'
 import { userLogout } from 'store/userSlice/userActions'
 
 import socket from 'services/socketIO'
+import notiAPI from 'services/notifications-api/noti-api'
 
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -23,6 +28,9 @@ const cx = classNames.bind(styles)
 function NavBar() {
     const isLoggedIn = useSelector((state) => state.user.isLoggedIn)
     const userInfor = useSelector((state) => state.user.info)
+    const [notifications, setNotifications] = useState()
+    const [showNoti, setShowNoti] = useState(false)
+    const [showDownload, setShowDownload] = useState(false)
 
     let avatarUrl
 
@@ -44,18 +52,33 @@ function NavBar() {
         dispatch(userLogout())
     }
 
+    const getNotifications = async () => {
+        try {
+            const res = await notiAPI.getNotifications()
+            if (res.data.success) {
+                setNotifications({ data: res.data.data, total: res.data.total })
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         socket.on('notification', (payload) => {
+            getNotifications()
             console.log(payload)
             switch (payload.type) {
                 case 'new-message':
                     toast.info(`Bạn có tin nhắn mới !`, { position: 'top-center' })
                     break
-
                 default:
                     toast.info('Bạn có thông báo mới !', { position: 'top-center' })
             }
         })
+    }, [])
+
+    useEffect(() => {
+        getNotifications()
     }, [])
 
     return (
@@ -67,7 +90,19 @@ function NavBar() {
                 <li>
                     <Link to='/shop/register'>Trở thành người bán Shoppe</Link>
                 </li>
-                <li>Tải ứng dụng</li>
+                <li
+                    onMouseOver={() => {
+                        setShowDownload(true)
+                    }}
+                    onMouseLeave={() => {
+                        setShowDownload(false)
+                    }}
+                >
+                    Tải ứng dụng
+                    <PopOver show={showDownload} right>
+                        <PlatformDownload />
+                    </PopOver>
+                </li>
                 <li>
                     <a href='https://www.facebook.com/' target='_blank' rel='noreferrer'>
                         Kết nối
@@ -81,9 +116,34 @@ function NavBar() {
                 </li>
             </ul>
             <ul className={cx('nav-bar', 'actions')}>
-                <li>
-                    <Link to='/notification'>
-                        <IoNotificationsSharp /> Thông báo
+                <li className={cx('notifi')}>
+                    <Link
+                        onMouseOver={() => {
+                            setShowNoti(true)
+                        }}
+                        onMouseLeave={() => {
+                            setShowNoti(false)
+                        }}
+                        to='/notification'
+                    >
+                        <span>
+                            <IoNotificationsSharp />
+                            {isLoggedIn && notifications?.total > 0 && (
+                                <div className={styles.notiPop}>
+                                    {notifications?.total}
+                                </div>
+                            )}
+                        </span>
+                        Thông báo
+                        <PopOver show={showNoti} right>
+                            {isLoggedIn && notifications?.data.length > 0 && (
+                                <NotifiList notifications={notifications.data} />
+                            )}
+                            {isLoggedIn && notifications?.data?.length === 0 && (
+                                <EmptyNotify />
+                            )}
+                            {!isLoggedIn && <EmptyNotify notLogin={true} />}
+                        </PopOver>
                     </Link>
                 </li>
                 <li>

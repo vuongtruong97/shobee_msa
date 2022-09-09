@@ -18,7 +18,7 @@
         "@types/express": "^4.17.13",
         "@types/morgan": "^1.9.3",
         "@types/multer": "^1.4.7",
-        "@vuongtruongnb/common": "^1.0.22",
+        "@vuongtruongnb/common": "^1.0.26",
         "bull": "^4.8.5",
         "cloudinary": "^1.31.0",
         "compression": "^1.7.4",

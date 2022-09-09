@@ -15,20 +15,22 @@ import { conversationCreate } from './routes/conversation-create'
 import { messageCreate } from './routes/message-create'
 import { conversationList } from './routes/conversation-get-list'
 import { messList } from './routes/mess-get-list'
+import { notiGetListRouter } from './routes/notify-list'
+
+const eventbus = new EventEmitter()
 
 interface User {
     userId: string
     socketId: string
 }
 
-const eventbus = new EventEmitter()
 let users: User[] = [] // online users
 
 const addUser = (userId: string, socketId: string) => {
     !users.some((user) => user.userId === userId) && users.push({ userId, socketId })
 }
 
-const removeUser = (socketId: User['userId']) => {
+const removeUser = (socketId: User['socketId']) => {
     users = users.filter((user) => user.socketId !== socketId)
 }
 
@@ -69,6 +71,7 @@ app.use(
 
 io.on('connection', (socket) => {
     console.log('socket connection established')
+    console.log('users', users)
 
     socket.on('addUser', (userId) => {
         addUser(userId, socket.id)
@@ -79,31 +82,20 @@ io.on('connection', (socket) => {
     //send and get message
     socket.on('sendMessage', ({ senderId, receiverId, text }, callback) => {
         const user = getUser(receiverId)
-        console.log(text)
-        console.log(user)
-
         if (user) {
             io.to(user.socketId).emit('getMessage', {
                 sender: senderId,
                 text,
-                _id: uuidv4(),
+                id: uuidv4(),
             })
 
             // emit new message event
-            eventbus.emit('new-message', {
-                text: text,
-                url: '',
-                sender: senderId,
-                createdAt: Date.now(),
-            })
-
-            io.to(user.socketId).emit('notification', {
-                type: 'new-message',
+            eventbus.emit('noti', {
+                content: text,
                 title: 'Tin nhắn mới',
-                text: text,
                 url: '',
-                sender: senderId,
-                createdAt: Date.now(),
+                type: 'new-message',
+                user_id: receiverId,
             })
 
             callback({
@@ -120,11 +112,27 @@ io.on('connection', (socket) => {
     })
 })
 
+// noti
+eventbus.on('noti', (payload) => {
+    const user = getUser(payload.user_id.toString())
+    if (user) {
+        io.to(user.socketId).emit('notification', {
+            type: payload.type,
+            title: payload.title,
+            content: payload.content,
+            url: '',
+        })
+    }
+
+    console.log(payload)
+})
+
 app.use(isAuthenticated)
 app.use(conversationCreate)
 app.use(messageCreate)
 app.use(conversationList)
 app.use(messList)
+app.use(notiGetListRouter)
 
 app.use('*', async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -133,9 +141,7 @@ app.use('*', async (req: Request, res: Response, next: NextFunction) => {
         next(error)
     }
 })
-// @ts-ignore
-// global.io.on('connection', chatService)
 
 app.use(errorHandler)
 
-export { server }
+export { server, eventbus }

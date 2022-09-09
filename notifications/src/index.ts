@@ -1,5 +1,8 @@
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
+import { rabbitWrapper } from './rabbitmq-wrapper'
+import { OrderUpdatedConsumer } from './events/consumers/order-updated-consumer'
+import { connectRedis } from '@vuongtruongnb/common'
 
 import { server } from './app'
 
@@ -21,7 +24,13 @@ const start = async () => {
         throw new Error('RABBIT_URI is not define')
     }
     try {
+        await connectRedis()
+
         await mongoose.connect(`${process.env.MONGO_URI}/noti`)
+
+        await rabbitWrapper.createConnection(process.env.RABBIT_URI + '?heartbeat=60')
+
+        await new OrderUpdatedConsumer(rabbitWrapper.consumerConnection).listen()
 
         console.log('Connected to catalog mongodb 😁')
         server.listen(PORT, () => {

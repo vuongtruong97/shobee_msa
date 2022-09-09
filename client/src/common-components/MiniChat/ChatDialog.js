@@ -9,6 +9,7 @@ import Picker from '@emoji-mart/react'
 import data from '@emoji-mart/data'
 import moment from 'moment'
 import 'moment/locale/vi'
+import dummyAvatar from 'assets/images/fallback_ava.jpg'
 
 import { BsFillImageFill, BsEmojiSmile } from 'react-icons/bs'
 import { BiSend } from 'react-icons/bi'
@@ -48,11 +49,11 @@ function ChatDialog({ user, currentChat, setCurrentChat }) {
     }, [arrivalMessage, currentChat])
 
     useEffect(() => {
+        setMessages([])
         const getMessages = async () => {
             try {
                 const res = await chatAPI.getMessages(currentChat.id)
                 setMessages(res.data.data)
-                console.log('message fetch', res.data)
             } catch (err) {
                 console.log(err)
             }
@@ -135,7 +136,7 @@ function ChatDialog({ user, currentChat, setCurrentChat }) {
     return (
         <div className={styles.conversation_dialog}>
             <div className={styles.conv_head}>
-                <img src={receiverInfo?.avatar_url} />
+                <img src={receiverInfo?.avatar_url || dummyAvatar} />
                 {receiverInfo && receiverInfo.email}
             </div>
             <div className={styles.conversation_wrap}>

@@ -10,7 +10,6 @@ const MiniChat = React.lazy(() => import('common-components/MiniChat/MiniChat'))
 
 function MainLayout() {
     const isLoggedIn = useSelector((state) => state.user.isLoggedIn)
-    console.log(isLoggedIn)
     return (
         <>
             <Header />

@@ -44,6 +44,27 @@
                     transform: scale(1.3);
                     margin: 0 5px;
                 }
+                & > span {
+                    display: flex;
+                    position: relative;
+                    color: #fff;
+                    & > .notiPop {
+                        position: absolute;
+                        background-color: #fff;
+                        border: 1px solid var(--primary);
+                        padding: 0.1rem 0.3rem;
+                        font-size: 1.1rem;
+                        border-radius: 999px;
+                        color: red;
+                        bottom: 30%;
+                        left: 40%;
+                    }
+                }
+            }
+        }
+        .notifi {
+            & > a:hover {
+                opacity: 1;
             }
         }
     }

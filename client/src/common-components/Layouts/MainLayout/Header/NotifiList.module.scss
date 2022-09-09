@@ -1,0 +1,40 @@
+.notifi {
+    font-size: 1.4rem;
+    width: 45rem;
+    .heading {
+        padding: 1rem;
+        color: rgba(0, 0, 0, 0.411);
+    }
+    .notiList {
+        display: flex;
+        flex-direction: column;
+        .noti {
+            background-color: #ffeadb;
+            padding: 0.5rem 1rem 1rem 0.5rem;
+            display: flex;
+            &:hover {
+                background-color: #fff;
+            }
+            .notiImg {
+                width: 4rem;
+                height: 4rem;
+                margin-right: 0.5rem;
+            }
+            .title {
+                text-transform: uppercase;
+                padding-top: 0.4rem;
+                font-size: 1.4rem;
+                color: var(--text-primary);
+            }
+            .content {
+                font-size: 1.3rem;
+            }
+        }
+    }
+    .footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+    }
+}

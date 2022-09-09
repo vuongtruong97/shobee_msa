@@ -2,6 +2,8 @@ import { Router, Request, Response, NextFunction } from 'express'
 import { BadRequestError, OrderStatus } from '@vuongtruongnb/common'
 import { Order } from '../models/Order'
 import { orderUpdateValidator } from '../validators/order-update-validator'
+import { OrderUpdatedPublisher } from '../events/publishers/orders-update-publisher'
+import { rabbitWrapper } from '../rabbitmq-wrapper'
 
 const router = Router()
 
@@ -26,6 +28,14 @@ router.patch(
             if (!result) {
                 throw new BadRequestError('Cập nhật trạng thái đơn hàng thất bại')
             }
+
+            await new OrderUpdatedPublisher(
+                rabbitWrapper.channels.orderUpdateChannel
+            ).publish({
+                buyer: result.buyer,
+                order_id: result.id,
+                order_status: result.status,
+            })
 
             res.send({
                 success: true,
